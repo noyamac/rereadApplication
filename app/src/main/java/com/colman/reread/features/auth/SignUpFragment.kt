@@ -5,6 +5,8 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.reread.databinding.FragmentSignUpBinding
@@ -25,6 +27,10 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val countries = listOf("Israel", "United States", "United Kingdom")
+        val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countries)
+        (binding.etCountry.editText as? AutoCompleteTextView)?.setAdapter(countryAdapter)
+
         binding.btnSignUp.setOnClickListener {
             if (validateInputs()) {
                 findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
@@ -41,6 +47,7 @@ class SignUpFragment : Fragment() {
         val name = binding.etName.editText?.text?.toString().orEmpty().trim()
         val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
         val password = binding.etPassword.editText?.text?.toString().orEmpty()
+        val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
 
         if (name.isEmpty()) {
             binding.etName.error = "Name is required"
@@ -61,6 +68,13 @@ class SignUpFragment : Fragment() {
             valid = false
         } else {
             binding.etPassword.error = null
+        }
+
+        if (country.isEmpty()) {
+            binding.etCountry.error = "Please select a country"
+            valid = false
+        } else {
+            binding.etCountry.error = null
         }
 
         return valid

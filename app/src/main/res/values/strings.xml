@@ -29,6 +29,7 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Full Name</string>
+        <string name="hint_country">Country</string>
     <string name="btn_sign_in">Sign In</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="go_to_sign_up">Don\'t have an account? Sign Up</string>
