@@ -13,8 +13,9 @@
 
     <fragment
         android:id="@+id/sellFragment"
-        android:name="com.colman.reread.features.PlaceholderFragment"
-        android:label="@string/nav_sell" />
+        android:name="com.colman.reread.features.sell.SellFragment"
+        android:label="@string/nav_sell"
+        tools:layout="@layout/fragment_sell" />
 
     <fragment
         android:id="@+id/myPostsFragment"
