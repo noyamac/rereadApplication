@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.colman.reread.features.home.HomeFragment"
         android:label="@string/nav_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/sellFragment"
@@ -26,4 +30,14 @@
         android:id="@+id/profileFragment"
         android:name="com.colman.reread.features.PlaceholderFragment"
         android:label="@string/nav_profile" />
+
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.colman.reread.features.details.BookDetailsFragment"
+        android:label="Book Details"
+        tools:layout="@layout/fragment_book_details">
+        <argument
+            android:name="book"
+            app:argType="com.colman.reread.model.Book" />
+    </fragment>
 </navigation>
