@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">reread</string>
+    <string name="app_name">ReRead</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_sell">Sell</string>
+    <string name="nav_my_posts">My Posts</string>
+    <string name="nav_profile">Profile</string>
+    <string name="search_hint">Search for books...</string>
+    <string name="btn_details">Details</string>
+    <string name="btn_add_book">Add Book</string>
+    <string name="placeholder_coming_soon">Coming Soon!</string>
+    <string name="price_format">$%1$.2f</string>
 </resources>

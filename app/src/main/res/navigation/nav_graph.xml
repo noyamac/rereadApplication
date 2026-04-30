@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.colman.reread.features.home.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/sellFragment"
+        android:name="com.colman.reread.features.PlaceholderFragment"
+        android:label="@string/nav_sell" />
+
+    <fragment
+        android:id="@+id/myPostsFragment"
+        android:name="com.colman.reread.features.PlaceholderFragment"
+        android:label="@string/nav_my_posts" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.colman.reread.features.PlaceholderFragment"
+        android:label="@string/nav_profile" />
+</navigation>
