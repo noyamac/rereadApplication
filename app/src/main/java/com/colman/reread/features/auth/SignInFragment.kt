@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.reread.databinding.FragmentSignInBinding
@@ -25,12 +26,36 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSignIn.setOnClickListener {
-            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
+            if (validateInputs()) {
+                findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
+            }
         }
 
         binding.tvGoToSignUp.setOnClickListener {
             findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
         }
+    }
+
+    private fun validateInputs(): Boolean {
+        var valid = true
+        val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
+        val password = binding.etPassword.editText?.text?.toString().orEmpty()
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.etEmail.error = "Enter a valid email address"
+            valid = false
+        } else {
+            binding.etEmail.error = null
+        }
+
+        if (password.length < 6) {
+            binding.etPassword.error = "Password must be at least 6 characters"
+            valid = false
+        } else {
+            binding.etPassword.error = null
+        }
+
+        return valid
     }
 
     override fun onDestroyView() {
