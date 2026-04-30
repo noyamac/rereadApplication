@@ -64,7 +64,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="The Great Gatsby" />
+                    tools:text="Title" />
 
                 <TextView
                     android:id="@+id/tv_author"
@@ -76,7 +76,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_title"
-                    tools:text="by F. Scott Fitzgerald" />
+                    tools:text="Author" />
 
                 <TextView
                     android:id="@+id/tv_price"
@@ -91,7 +91,7 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_author"
-                    tools:text="$15.99" />
+                    tools:text="0.0$" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/divider"
@@ -119,7 +119,7 @@
                     android:layout_marginTop="8dp"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:layout_constraintTop_toBottomOf="@id/label_description"
-                    tools:text="Like New - Hardcover" />
+                    tools:text="Description" />
 
                 <TextView
                     android:id="@+id/label_summary"
@@ -141,7 +141,7 @@
                     android:lineSpacingExtra="4dp"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     app:layout_constraintTop_toBottomOf="@id/label_summary"
-                    tools:text="A story of wealth, love, and the American Dream in the 1920s." />
+                    tools:text="Summary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_contact"
