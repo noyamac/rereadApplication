@@ -29,6 +29,8 @@
     <string name="label_summary">SUMMARY</string>
     <string name="btn_contact_seller">Contact Seller</string>
     <string name="author_format">by %1$s</string>
+    <string name="label_seller_name">Seller:</string>
+    <string name="label_seller_email">Email:</string>
 
     <!-- Profile Page -->
     <string name="profile_title">My Profile</string>
