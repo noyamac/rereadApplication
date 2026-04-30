@@ -25,8 +25,6 @@ class BookAdapter : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallba
         fun bind(book: Book) {
             binding.bookTitle.text = book.title
             binding.bookAuthor.text = book.author
-            
-            // Fixed warning: Use string resource with placeholders for formatting
             binding.bookPrice.text = itemView.context.getString(R.string.price_format, book.price)
             
             val placeholder = R.drawable.default_book_cover

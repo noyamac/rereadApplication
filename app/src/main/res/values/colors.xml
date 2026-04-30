@@ -3,12 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Reread Green Theme (Material 3 compatible) -->
     <color name="primary">#4CAF50</color>
     <color name="onPrimary">#FFFFFF</color>
     <color name="primaryContainer">#C8E6C9</color>
     <color name="onPrimaryContainer">#1B5E20</color>
-    <color name="primary_light">#A5D6A7</color> <!-- Light Green for Navbar -->
+    <color name="primary_light">#A5D6A7</color>
 
     <color name="secondary">#388E3C</color>
     <color name="onSecondary">#FFFFFF</color>

@@ -5,8 +5,8 @@ data class Book(
     val title: String,
     val author: String,
     val price: Double,
-    val description: String, // Book condition
-    val summary: String,     // Plot summary
+    val description: String,
+    val summary: String,
     val imageUrl: String,
     val contactPhone: String
 )
