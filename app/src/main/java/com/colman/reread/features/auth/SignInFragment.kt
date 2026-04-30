@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.colman.reread.R
 import com.colman.reread.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {
@@ -26,11 +25,11 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSignIn.setOnClickListener {
-            findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
+            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
         }
 
         binding.tvGoToSignUp.setOnClickListener {
-            findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
         }
     }
 
