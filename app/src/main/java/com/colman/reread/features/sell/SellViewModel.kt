@@ -37,7 +37,6 @@ class SellViewModel : ViewModel() {
             return
         }
 
-        // Simulate creating the book object with the new contactPhone field
         val newBook = Book(
             id = System.currentTimeMillis().toString(),
             title = title,
