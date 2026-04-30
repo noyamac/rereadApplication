@@ -18,6 +18,7 @@ class ProfileViewModel : ViewModel() {
         _userData.value = User(
             id = "1",
             name = "John Doe",
+            email = "john.doe@example.com",
             phone = "+1 234 567 890",
             country = "United States",
             city = "New York",

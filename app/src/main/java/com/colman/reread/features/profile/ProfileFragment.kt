@@ -33,6 +33,7 @@ class ProfileFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.userData.observe(viewLifecycleOwner) { user ->
             binding.tvName.text = user.name
+            binding.tvEmail.text = user.email
             binding.tvPhone.text = user.phone
             binding.tvCountry.text = user.country
             binding.tvCity.text = user.city
