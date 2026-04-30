@@ -1,5 +1,9 @@
 package com.colman.reread.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Book(
     val id: String,
     val title: String,
@@ -9,4 +13,4 @@ data class Book(
     val summary: String,
     val imageUrl: String,
     val contactPhone: String
-)
+) : Parcelable

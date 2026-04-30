@@ -10,18 +10,22 @@ import com.colman.reread.model.Book
 import com.colman.reread.databinding.ItemBookBinding
 import com.squareup.picasso.Picasso
 
-class BookAdapter : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+class BookAdapter(private val onBookClick: (Book) -> Unit) : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BookViewHolder(binding)
+        return BookViewHolder(binding, onBookClick)
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class BookViewHolder(private val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
+    class BookViewHolder(
+        private val binding: ItemBookBinding,
+        private val onBookClick: (Book) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        
         fun bind(book: Book) {
             binding.bookTitle.text = book.title
             binding.bookAuthor.text = book.author
@@ -37,6 +41,10 @@ class BookAdapter : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallba
                     .into(binding.bookCover)
             } else {
                 binding.bookCover.setImageResource(placeholder)
+            }
+
+            binding.btnDetails.setOnClickListener {
+                onBookClick(book)
             }
         }
     }

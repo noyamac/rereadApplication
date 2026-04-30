@@ -9,7 +9,7 @@
     <string name="btn_add_book">Add Book</string>
     <string name="placeholder_coming_soon">Coming Soon!</string>
     <string name="price_format">$%1$.2f</string>
-    
+
     <!-- Sell Page -->
     <string name="sell_book_title">List a Book for Sale</string>
     <string name="hint_book_title">Book Title *</string>
@@ -23,6 +23,12 @@
     <string name="error_empty_fields">Please fill all required fields</string>
     <string name="error_invalid_price">Please enter a valid price</string>
     <string name="success_post">Book posted successfully!</string>
+
+    <!-- Details Page -->
+    <string name="label_condition">CONDITION</string>
+    <string name="label_summary">SUMMARY</string>
+    <string name="btn_contact_seller">Contact Seller</string>
+    <string name="author_format">by %1$s</string>
 
     <!-- Profile Page -->
     <string name="profile_title">My Profile</string>

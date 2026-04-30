@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.colman.reread.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -15,8 +16,10 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels()
-    private val adapter = BookAdapter()
-
+    private val adapter = BookAdapter { book ->
+        val action = HomeFragmentDirections.actionHomeFragmentToBookDetailsFragment(book)
+        findNavController().navigate(action)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
