@@ -23,8 +23,13 @@
 
     <fragment
         android:id="@+id/myPostsFragment"
-        android:name="com.colman.reread.features.PlaceholderFragment"
-        android:label="@string/nav_my_posts" />
+        android:name="com.colman.reread.features.myposts.MyPostsFragment"
+        android:label="@string/nav_my_posts"
+        tools:layout="@layout/fragment_my_posts">
+        <action
+            android:id="@+id/action_myPostsFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
