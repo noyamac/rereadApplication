@@ -17,6 +17,7 @@
     <string name="hint_price">Price *</string>
     <string name="hint_description">Description (e.g. Condition) *</string>
     <string name="hint_summary">Plot Summary *</string>
+    <string name="hint_contact_phone">Contact Phone *</string>
     <string name="hint_image_url">Cover Image URL</string>
     <string name="btn_post_book">Post Book</string>
     <string name="error_empty_fields">Please fill all required fields</string>

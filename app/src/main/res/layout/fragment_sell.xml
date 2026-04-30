@@ -106,13 +106,29 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_contact_phone"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/hint_contact_phone"
+            app:layout_constraintTop_toBottomOf="@id/til_summary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_contact_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_image_url"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="@string/hint_image_url"
-            app:layout_constraintTop_toBottomOf="@id/til_summary">
+            app:layout_constraintTop_toBottomOf="@id/til_contact_phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_image_url"

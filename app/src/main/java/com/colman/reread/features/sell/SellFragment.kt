@@ -40,6 +40,7 @@ class SellFragment : Fragment() {
                 priceStr = binding.etPrice.text.toString(),
                 description = binding.etDescription.text.toString(),
                 summary = binding.etSummary.text.toString(),
+                contactPhone = binding.etContactPhone.text.toString(),
                 imageUrl = binding.etImageUrl.text.toString()
             )
         }
@@ -69,6 +70,7 @@ class SellFragment : Fragment() {
         binding.etPrice.text?.clear()
         binding.etDescription.text?.clear()
         binding.etSummary.text?.clear()
+        binding.etContactPhone.text?.clear()
         binding.etImageUrl.text?.clear()
     }
 

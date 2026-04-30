@@ -16,8 +16,17 @@ class SellViewModel : ViewModel() {
         object Idle : PostStatus()
     }
 
-    fun postBook(title: String, author: String, priceStr: String, description: String, summary: String, imageUrl: String) {
-        if (title.isBlank() || author.isBlank() || priceStr.isBlank() || description.isBlank() || summary.isBlank()) {
+    fun postBook(
+        title: String,
+        author: String,
+        priceStr: String,
+        description: String,
+        summary: String,
+        contactPhone: String,
+        imageUrl: String
+    ) {
+        if (title.isBlank() || author.isBlank() || priceStr.isBlank() || 
+            description.isBlank() || summary.isBlank() || contactPhone.isBlank()) {
             _postStatus.value = PostStatus.Error("Please fill all required fields")
             return
         }
@@ -28,7 +37,7 @@ class SellViewModel : ViewModel() {
             return
         }
 
-        // TODO: In the future, this is where we will call the Repository to save to Firebase/DB
+        // Simulate creating the book object with the new contactPhone field
         val newBook = Book(
             id = System.currentTimeMillis().toString(),
             title = title,
@@ -36,9 +45,11 @@ class SellViewModel : ViewModel() {
             price = price,
             description = description,
             summary = summary,
-            imageUrl = imageUrl.ifBlank { "" } // Adapter handles empty URL with default image
+            imageUrl = imageUrl.ifBlank { "" },
+            contactPhone = contactPhone
         )
 
+        // TODO: In the future, save newBook to a repository/database
         _postStatus.value = PostStatus.Success
     }
 
