@@ -19,6 +19,8 @@ class ProfileViewModel : ViewModel() {
             id = "1",
             name = "John Doe",
             phone = "+1 234 567 890",
+            country = "United States",
+            city = "New York",
             profileImageUrl = ""
         )
     }

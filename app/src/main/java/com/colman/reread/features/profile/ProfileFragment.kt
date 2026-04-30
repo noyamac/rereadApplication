@@ -34,7 +34,9 @@ class ProfileFragment : Fragment() {
         viewModel.userData.observe(viewLifecycleOwner) { user ->
             binding.tvName.text = user.name
             binding.tvPhone.text = user.phone
-
+            binding.tvCountry.text = user.country
+            binding.tvCity.text = user.city
+            
             if (user.profileImageUrl.isNotEmpty()) {
                 Picasso.get()
                     .load(user.profileImageUrl)
