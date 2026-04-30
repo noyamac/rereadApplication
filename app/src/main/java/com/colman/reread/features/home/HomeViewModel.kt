@@ -18,7 +18,8 @@ class HomeViewModel : ViewModel() {
             price = 15.99,
             description = "Like New - Hardcover",
             summary = "A story of wealth, love, and the American Dream in the 1920s.",
-            imageUrl = "https://covers.openlibrary.org/b/id/7222246-L.jpg"
+            imageUrl = "https://covers.openlibrary.org/b/id/7222246-L.jpg",
+            contactPhone = "050-1234567"
         ),
         Book(
             id = "2",
@@ -27,7 +28,8 @@ class HomeViewModel : ViewModel() {
             price = 12.50,
             description = "Good - Minor wear on cover",
             summary = "A dystopian novel about totalitarianism, surveillance, and control.",
-            imageUrl = "https://covers.openlibrary.org/b/id/15102551-L.jpg"
+            imageUrl = "https://covers.openlibrary.org/b/id/15102551-L.jpg",
+            contactPhone = "052-9876543"
         ),
         Book(
             id = "3",
@@ -36,7 +38,8 @@ class HomeViewModel : ViewModel() {
             price = 14.00,
             description = "New - Paperback",
             summary = "A classic tale of justice and childhood in the Deep South.",
-            imageUrl = "https://covers.openlibrary.org/b/id/8226191-L.jpg"
+            imageUrl = "https://covers.openlibrary.org/b/id/8226191-L.jpg",
+            contactPhone = "054-5554433"
         ),
         Book(
             id = "4",
@@ -45,7 +48,8 @@ class HomeViewModel : ViewModel() {
             price = 10.99,
             description = "Acceptable - Yellowed pages",
             summary = "A story about teenage angst and alienation in New York City.",
-            imageUrl = "https://covers.openlibrary.org/b/id/8231992-L.jpg"
+            imageUrl = "https://covers.openlibrary.org/b/id/8231992-L.jpg",
+            contactPhone = "050-0001112"
         ),
         Book(
             id = "5",
@@ -54,7 +58,8 @@ class HomeViewModel : ViewModel() {
             price = 9.99,
             description = "Very Good - Pocket edition",
             summary = "A romantic masterpiece about manners, marriage, and morality.",
-            imageUrl = "https://covers.openlibrary.org/b/id/14578132-L.jpg"
+            imageUrl = "https://covers.openlibrary.org/b/id/14578132-L.jpg",
+            contactPhone = "058-7778899"
         )
     )
 

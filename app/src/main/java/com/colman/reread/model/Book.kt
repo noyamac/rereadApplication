@@ -7,5 +7,6 @@ data class Book(
     val price: Double,
     val description: String, // Book condition
     val summary: String,     // Plot summary
-    val imageUrl: String
+    val imageUrl: String,
+    val contactPhone: String
 )
