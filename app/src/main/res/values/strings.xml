@@ -21,5 +21,12 @@
     <string name="hint_image_url">Cover Image URL</string>
     <string name="btn_post_book">Post Book</string>
     <string name="error_empty_fields">Please fill all required fields</string>
+    <string name="error_invalid_price">Please enter a valid price</string>
     <string name="success_post">Book posted successfully!</string>
+
+    <!-- Profile Page -->
+    <string name="profile_title">My Profile</string>
+    <string name="profile_label_name">Name</string>
+    <string name="profile_label_phone">Phone</string>
+    <string name="profile_edit_button">Edit Profile</string>
 </resources>

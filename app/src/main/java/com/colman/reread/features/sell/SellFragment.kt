@@ -55,7 +55,7 @@ class SellFragment : Fragment() {
                     viewModel.resetStatus()
                 }
                 is SellViewModel.PostStatus.Error -> {
-                    Toast.makeText(context, status.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(status.messageResId), Toast.LENGTH_SHORT).show()
                 }
                 is SellViewModel.PostStatus.Idle -> {
                     // TODO: implement create in server
