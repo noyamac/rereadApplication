@@ -176,6 +176,7 @@ class SignUpFragment : Fragment() {
         val name = binding.etName.editText?.text?.toString().orEmpty().trim()
         val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
         val password = binding.etPassword.editText?.text?.toString().orEmpty()
+        val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
         val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
         val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
 
@@ -198,6 +199,13 @@ class SignUpFragment : Fragment() {
             valid = false
         } else {
             binding.etPassword.error = null
+        }
+
+        if (phone.isEmpty()) {
+            binding.etPhone.error = "Phone is required"
+            valid = false
+        } else {
+            binding.etPhone.error = null
         }
 
         if (country.isEmpty()) {
