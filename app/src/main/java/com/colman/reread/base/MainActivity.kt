@@ -1,6 +1,7 @@
 package com.colman.reread.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,5 +22,17 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         
         binding.bottomNavigation.setupWithNavController(navController)
+
+        val authDestinations = setOf(R.id.signInFragment, R.id.signUpFragment)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in authDestinations) {
+                binding.appBar.visibility = View.GONE
+                binding.bottomNavigation.visibility = View.GONE
+            } else {
+                binding.appBar.visibility = View.VISIBLE
+                binding.bottomNavigation.visibility = View.VISIBLE
+            }
+        }
     }
 }
