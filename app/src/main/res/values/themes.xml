@@ -29,4 +29,8 @@
     <style name="RoundedImageView">
         <item name="cornerSize">12dp</item>
     </style>
+
+    <style name="CircleImageView">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

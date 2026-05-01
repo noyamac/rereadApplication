@@ -31,6 +31,8 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupListeners()
         observeViewModel()
 
         binding.btnLogout.setOnClickListener {
@@ -44,6 +46,13 @@ class ProfileFragment : Fragment() {
                     }
                 }
             )
+        }
+    }
+
+    private fun setupListeners() {
+        binding.btnEditProfile.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
+            findNavController().navigate(action)
         }
     }
 
