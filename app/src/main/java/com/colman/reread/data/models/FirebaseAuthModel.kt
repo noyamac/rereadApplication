@@ -34,6 +34,10 @@ class FirebaseAuthModel {
     }
 
     fun getUserId(): String? = auth.currentUser?.uid
+
+    fun deleteCurrentUser() {
+        auth.currentUser?.delete()
+    }
     
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
     

@@ -52,4 +52,5 @@
     <string name="profile_label_country">Country</string>
     <string name="profile_label_city">City</string>
     <string name="profile_edit_button">Edit Profile</string>
+    <string name="profile_logout_button">Logout</string>
 </resources>

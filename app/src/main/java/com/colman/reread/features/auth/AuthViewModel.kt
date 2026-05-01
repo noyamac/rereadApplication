@@ -22,19 +22,23 @@ class AuthViewModel : ViewModel() {
 
     fun login(email: String, password: String) {
         _authState.value = AuthState.Loading
-        repository.signIn(email, password) { uid ->
-            if (uid != null) {
+        repository.signIn(email, password) { success, message ->
+            if (success) {
                 _authState.value = AuthState.Success
             } else {
-                _authState.value = AuthState.Error("Login failed. Check your credentials.")
+                _authState.value = AuthState.Error(message ?: "Login failed. Check your credentials.")
             }
         }
     }
 
     fun signup(user: User, password: String) {
         _authState.value = AuthState.Loading
-        repository.signUp(user, password) {
-            _authState.value = AuthState.Success
+        repository.signUp(user, password) { success, message ->
+            if (success) {
+                _authState.value = AuthState.Success
+            } else {
+                _authState.value = AuthState.Error(message ?: "Sign up failed")
+            }
         }
     }
 

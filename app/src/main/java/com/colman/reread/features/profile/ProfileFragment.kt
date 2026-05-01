@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.colman.reread.R
+import com.colman.reread.data.repository.UsersRepository
 import com.colman.reread.databinding.FragmentProfileBinding
 import com.squareup.picasso.Picasso
 
@@ -28,6 +32,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+
+        binding.btnLogout.setOnClickListener {
+            UsersRepository.shared.signOut()
+            findNavController().navigate(
+                R.id.signInFragment,
+                bundleOf(),
+                navOptions {
+                    popUpTo(R.id.nav_graph) {
+                        inclusive = true
+                    }
+                }
+            )
+        }
     }
 
     private fun observeViewModel() {
