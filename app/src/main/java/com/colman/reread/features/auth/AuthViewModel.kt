@@ -33,8 +33,8 @@ class AuthViewModel : ViewModel() {
     fun signup(user: User, password: String) {
         _authState.value = AuthState.Loading
         repository.signUp(
-            user = user,
-            password = password,
+            user,
+            password,
             onSuccess = { _authState.value = AuthState.Success },
             onError = { error -> _authState.value = AuthState.Error(error) }
         )

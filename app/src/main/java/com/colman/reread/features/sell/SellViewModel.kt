@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.R
+import com.colman.reread.data.repository.UserRepository
 import com.colman.reread.model.Book
-import com.colman.reread.model.UserRepository
 
 class SellViewModel : ViewModel() {
+
+    private val userRepository = UserRepository.shared
 
     private val _postStatus = MutableLiveData<PostStatus>()
     val postStatus: LiveData<PostStatus> = _postStatus
@@ -39,22 +41,23 @@ class SellViewModel : ViewModel() {
             return
         }
 
-        val user = UserRepository.currentUser
-        val newBook = Book(
-            id = System.currentTimeMillis().toString(),
-            title = title,
-            author = author,
-            price = price,
-            description = description,
-            summary = summary,
-            imageUrl = imageUrl.ifBlank { "" },
-            contactPhone = contactPhone,
-            sellerName = user.name,
-            sellerEmail = user.email
-        )
+        userRepository.getCurrentUser { user ->
+            val newBook = Book(
+                id = System.currentTimeMillis().toString(),
+                title = title,
+                author = author,
+                price = price,
+                description = description,
+                summary = summary,
+                imageUrl = imageUrl.ifBlank { "" },
+                contactPhone = contactPhone,
+                sellerName = user?.name ?: "",
+                sellerEmail = user?.email ?: ""
+            )
 
-        // TODO: In the future, save newBook to a repository/database
-        _postStatus.value = PostStatus.Success
+            // TODO: In the future, save newBook to a repository/database
+            _postStatus.value = PostStatus.Success
+        }
     }
 
     fun resetStatus() {
