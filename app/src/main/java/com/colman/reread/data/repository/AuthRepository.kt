@@ -25,8 +25,10 @@ class AuthRepository private constructor() {
         onSuccess: SuccessCompletion,
         onError: ErrorCompletion
     ) {
-        firebaseAuth.signUp(user.email, password) { uid, authError ->
-            if (uid != null) {
+        firebaseAuth.signUp(
+            email = user.email,
+            password = password,
+            onSuccess = { uid ->
                 val userWithId = user.copy(id = uid)
                 firebaseModel.addUser(
                     user = userWithId,
@@ -40,10 +42,11 @@ class AuthRepository private constructor() {
                         }
                     }
                 )
-            } else {
-                mainHandler.post { onError(authError ?: "Sign up failed") }
+            },
+            onError = { error ->
+                mainHandler.post { onError(error) }
             }
-        }
+        )
     }
 
     fun signIn(
@@ -52,28 +55,30 @@ class AuthRepository private constructor() {
         onSuccess: SuccessCompletion,
         onError: ErrorCompletion
     ) {
-        firebaseAuth.signIn(email, password) { uid, authError ->
-            if (uid == null) {
-                mainHandler.post { onError(authError ?: "Invalid email or password") }
-                return@signIn
-            }
-
-            firebaseModel.getUserById(
-                id = uid,
-                onSuccess = { user ->
-                    mainHandler.post {
-                        if (user != null) {
-                            onSuccess()
-                        } else {
-                            firebaseAuth.signOut()
-                            onError("User is not registered in database")
+        firebaseAuth.signIn(
+            email = email,
+            password = password,
+            onSuccess = { uid ->
+                firebaseModel.getUserById(
+                    id = uid,
+                    onSuccess = { user ->
+                        mainHandler.post {
+                            if (user != null) {
+                                onSuccess()
+                            } else {
+                                firebaseAuth.signOut()
+                                onError("User is not registered in database")
+                            }
                         }
+                    },
+                    onError = {
+                        mainHandler.post { onError("Failed to verify user profile. Please try again") }
                     }
-                },
-                onError = {
-                    mainHandler.post { onError("Failed to verify user profile. Please try again") }
-                }
-            )
-        }
+                )
+            },
+            onError = { error ->
+                mainHandler.post { onError(error) }
+            }
+        )
     }
 }

@@ -1,6 +1,5 @@
 package com.colman.reread.data.models
 
-import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -13,26 +12,24 @@ class FirebaseAuthModel {
 
     private var auth: FirebaseAuth = Firebase.auth
 
-    fun signUp(email: String, password: String, completion: (String?, String?) -> Unit) {
+    fun signUp(email: String, password: String, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    completion(auth.currentUser?.uid, null)
+                    onSuccess(auth.currentUser!!.uid)
                 } else {
-                    Log.w("TAG", "signUp: failure", task.exception)
-                    completion(null, mapAuthError(task.exception))
+                    onError(mapAuthError(task.exception))
                 }
             }
     }
 
-    fun signIn(email: String, password: String, completion: (String?, String?) -> Unit) {
+    fun signIn(email: String, password: String, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    completion(auth.currentUser?.uid, null)
+                    onSuccess(auth.currentUser!!.uid)
                 } else {
-                    Log.w("TAG", "signIn: failure", task.exception)
-                    completion(null, mapAuthError(task.exception))
+                    onError(mapAuthError(task.exception))
                 }
             }
     }
