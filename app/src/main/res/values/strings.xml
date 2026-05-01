@@ -54,7 +54,22 @@
     <string name="profile_label_city">City</string>
     <string name="profile_edit_button">Edit Profile</string>
 
+    <!-- Edit Profile Page -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="hint_edit_name">Full Name *</string>
+    <string name="hint_phone">Phone Number *</string>
+    <string name="hint_edit_country">Country *</string>
+    <string name="hint_edit_city">City *</string>
+    <string name="hint_profile_image_url">Profile Image URL</string>
+    <string name="btn_change_image">Update Image Preview</string>
+    <string name="btn_save_profile">Save Changes</string>
+    <string name="success_profile_update">Profile updated successfully!</string>
+
     <!-- Actions -->
     <string name="btn_edit">Edit</string>
     <string name="btn_delete">Delete</string>
+    <string name="title_book_details">Book Details</string>
+    <string name="content_description_options">Options</string>
+    <string name="toast_edit_clicked">Edit: %1$s</string>
+    <string name="toast_delete_clicked">Deleted: %1$s</string>
 </resources>
