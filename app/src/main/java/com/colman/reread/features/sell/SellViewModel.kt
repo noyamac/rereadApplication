@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.R
 import com.colman.reread.model.Book
+import com.colman.reread.model.BookRepository
 import com.colman.reread.model.UserRepository
 
 class SellViewModel : ViewModel() {
@@ -53,7 +54,7 @@ class SellViewModel : ViewModel() {
             sellerEmail = user.email
         )
 
-        // TODO: In the future, save newBook to a repository/database
+        BookRepository.addBook(newBook)
         _postStatus.value = PostStatus.Success
     }
 

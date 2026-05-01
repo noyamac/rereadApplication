@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_myPostsFragment_to_bookDetailsFragment"
             app:destination="@id/bookDetailsFragment" />
+        <action
+            android:id="@+id/action_myPostsFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
     </fragment>
 
     <fragment
@@ -83,4 +86,14 @@
         android:name="com.colman.reread.features.profile.EditProfileFragment"
         android:label="@string/edit_profile_title"
         tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.colman.reread.features.myposts.EditPostFragment"
+        android:label="@string/edit_post_title"
+        tools:layout="@layout/fragment_edit_post">
+        <argument
+            android:name="book"
+            app:argType="com.colman.reread.model.Book" />
+    </fragment>
 </navigation>

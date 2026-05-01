@@ -1,90 +1,42 @@
 package com.colman.reread.features.home
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.model.Book
+import com.colman.reread.model.BookRepository
 
 class HomeViewModel : ViewModel() {
 
-    private val _books = MutableLiveData<List<Book>>()
+    private val _searchQuery = MutableLiveData<String>("")
+    
+    private val _books = MediatorLiveData<List<Book>>()
     val books: LiveData<List<Book>> = _books
 
-    private val allBooks = listOf(
-        Book(
-            id = "1",
-            title = "The Great Gatsby",
-            author = "F. Scott Fitzgerald",
-            price = 15.99,
-            description = "Like New - Hardcover",
-            summary = "A story of wealth, love, and the American Dream in the 1920s.",
-            imageUrl = "https://covers.openlibrary.org/b/id/7222246-L.jpg",
-            contactPhone = "050-1234567",
-            sellerName = "Alice Smith",
-            sellerEmail = "alice@example.com"
-        ),
-        Book(
-            id = "2",
-            title = "1984",
-            author = "George Orwell",
-            price = 12.50,
-            description = "Good - Minor wear on cover",
-            summary = "A dystopian novel about totalitarianism, surveillance, and control.",
-            imageUrl = "https://covers.openlibrary.org/b/id/15102551-L.jpg",
-            contactPhone = "052-9876543",
-            sellerName = "John Doe",
-            sellerEmail = "john.doe@example.com"
-        ),
-        Book(
-            id = "3",
-            title = "To Kill a Mockingbird",
-            author = "Harper Lee",
-            price = 14.00,
-            description = "New - Paperback",
-            summary = "A classic tale of justice and childhood in the Deep South.",
-            imageUrl = "https://covers.openlibrary.org/b/id/8226191-L.jpg",
-            contactPhone = "054-5554433",
-            sellerName = "Bob Brown",
-            sellerEmail = "bob@example.com"
-        ),
-        Book(
-            id = "4",
-            title = "The Catcher in the Rye",
-            author = "J.D. Salinger",
-            price = 10.99,
-            description = "Acceptable - Yellowed pages",
-            summary = "A story about teenage angst and alienation in New York City.",
-            imageUrl = "https://covers.openlibrary.org/b/id/8231992-L.jpg",
-            contactPhone = "050-0001112",
-            sellerName = "John Doe",
-            sellerEmail = "john.doe@example.com"
-        ),
-        Book(
-            id = "5",
-            title = "Pride and Prejudice",
-            author = "Jane Austen",
-            price = 9.99,
-            description = "Very Good - Pocket edition",
-            summary = "A romantic masterpiece about manners, marriage, and morality.",
-            imageUrl = "https://covers.openlibrary.org/b/id/14578132-L.jpg",
-            contactPhone = "058-7778899",
-            sellerName = "Charlie Davis",
-            sellerEmail = "charlie@example.com"
-        )
-    )
-
     init {
-        _books.value = allBooks
+        _books.addSource(BookRepository.books) { allBooks ->
+            filterBooks(allBooks, _searchQuery.value ?: "")
+        }
+        
+        _books.addSource(_searchQuery) { query ->
+            filterBooks(BookRepository.books.value ?: emptyList(), query)
+        }
     }
 
-    fun filterBooks(query: String) {
-        if (query.isEmpty()) {
-            _books.value = allBooks
+    private fun filterBooks(allBooks: List<Book>, query: String) {
+        val result = if (query.isEmpty()) {
+            allBooks
         } else {
-            _books.value = allBooks.filter { 
+            allBooks.filter { 
                 it.title.contains(query, ignoreCase = true) || 
                 it.author.contains(query, ignoreCase = true) 
             }
         }
+        _books.value = ArrayList(result)
+    }
+
+    fun filterBooks(query: String) {
+        _searchQuery.value = query
     }
 }
