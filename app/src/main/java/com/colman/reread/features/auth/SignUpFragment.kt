@@ -129,12 +129,14 @@ class SignUpFragment : Fragment() {
                 val name = binding.etName.editText?.text?.toString().orEmpty().trim()
                 val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
                 val password = binding.etPassword.editText?.text?.toString().orEmpty()
+                val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
                 val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
                 val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
 
                 val user = User(
-                    fullName = name,
+                    name = name,
                     email = email,
+                    phone = phone,
                     country = country,
                     city = city
                 )
