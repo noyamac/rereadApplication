@@ -14,8 +14,8 @@ data class Book(
     val summary: String,
     val imageUrl: String,
     val contactPhone: String,
-    val sellerName: String,
-    val sellerEmail: String
+    val sellerName: String = "",
+    val sellerEmail: String = ""
 ) : Parcelable {
 
     val toJson: Map<String, Any>
@@ -28,6 +28,8 @@ data class Book(
             SUMMARY_KEY to summary,
             IMAGE_URL_KEY to imageUrl,
             CONTACT_PHONE_KEY to contactPhone,
+            SELLER_NAME_KEY to sellerName,
+            SELLER_EMAIL_KEY to sellerEmail,
             LAST_UPDATED_KEY to Timestamp.now()
         )
 
@@ -41,6 +43,8 @@ data class Book(
         const val SUMMARY_KEY = "summary"
         const val IMAGE_URL_KEY = "imageUrl"
         const val CONTACT_PHONE_KEY = "contactPhone"
+        const val SELLER_NAME_KEY = "sellerName"
+        const val SELLER_EMAIL_KEY = "sellerEmail"
 
         fun fromJson(json: Map<String, Any>): Book? {
             val id = json[ID_KEY] as? String ?: return null
@@ -51,6 +55,8 @@ data class Book(
             val summary = json[SUMMARY_KEY] as? String ?: ""
             val imageUrl = json[IMAGE_URL_KEY] as? String ?: ""
             val contactPhone = json[CONTACT_PHONE_KEY] as? String ?: ""
+            val sellerName = json[SELLER_NAME_KEY] as? String ?: ""
+            val sellerEmail = json[SELLER_EMAIL_KEY] as? String ?: ""
 
             return Book(
                 id = id,
@@ -60,9 +66,10 @@ data class Book(
                 description = description,
                 summary = summary,
                 imageUrl = imageUrl,
-                contactPhone = contactPhone
+                contactPhone = contactPhone,
+                sellerName = sellerName,
+                sellerEmail = sellerEmail
             )
         }
     }
 }
-) : Parcelable
