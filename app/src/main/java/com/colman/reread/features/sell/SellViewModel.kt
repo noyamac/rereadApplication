@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.R
 import com.colman.reread.model.Book
+import com.colman.reread.model.UserRepository
 
 class SellViewModel : ViewModel() {
 
@@ -38,6 +39,7 @@ class SellViewModel : ViewModel() {
             return
         }
 
+        val user = UserRepository.currentUser
         val newBook = Book(
             id = System.currentTimeMillis().toString(),
             title = title,
@@ -46,7 +48,9 @@ class SellViewModel : ViewModel() {
             description = description,
             summary = summary,
             imageUrl = imageUrl.ifBlank { "" },
-            contactPhone = contactPhone
+            contactPhone = contactPhone,
+            sellerName = user.name,
+            sellerEmail = user.email
         )
 
         // TODO: In the future, save newBook to a repository/database

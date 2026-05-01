@@ -43,6 +43,8 @@
     <string name="label_summary">SUMMARY</string>
     <string name="btn_contact_seller">Contact Seller</string>
     <string name="author_format">by %1$s</string>
+    <string name="label_seller_name">Seller:</string>
+    <string name="label_seller_email">Email:</string>
 
     <!-- Profile Page -->
     <string name="profile_title">My Profile</string>
@@ -53,4 +55,8 @@
     <string name="profile_label_city">City</string>
     <string name="profile_edit_button">Edit Profile</string>
     <string name="profile_logout_button">Logout</string>
+
+    <!-- Actions -->
+    <string name="btn_edit">Edit</string>
+    <string name="btn_delete">Delete</string>
 </resources>

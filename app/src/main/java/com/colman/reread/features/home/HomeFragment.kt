@@ -16,10 +16,12 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels()
-    private val adapter = BookAdapter { book ->
-        val action = HomeFragmentDirections.actionHomeFragmentToBookDetailsFragment(book)
-        findNavController().navigate(action)
-    }
+    private val adapter = BookAdapter(
+        onBookClick = { book ->
+            val action = HomeFragmentDirections.actionHomeFragmentToBookDetailsFragment(book)
+            findNavController().navigate(action)
+        }
+    )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
