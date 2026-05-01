@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,10 +18,19 @@ class MyPostsFragment : Fragment() {
 
     private val viewModel: MyPostsViewModel by viewModels()
     
-    private val adapter = BookAdapter { book ->
-        val action = MyPostsFragmentDirections.actionMyPostsFragmentToBookDetailsFragment(book)
-        findNavController().navigate(action)
-    }
+    private val adapter = BookAdapter(
+        onBookClick = { book ->
+            val action = MyPostsFragmentDirections.actionMyPostsFragmentToBookDetailsFragment(book)
+            findNavController().navigate(action)
+        },
+        onEditClick = { book ->
+            Toast.makeText(context, "Edit: ${book.title}", Toast.LENGTH_SHORT).show()
+        },
+        onDeleteClick = { book ->
+            viewModel.deleteBook(book)
+            Toast.makeText(context, "Deleted: ${book.title}", Toast.LENGTH_SHORT).show()
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
