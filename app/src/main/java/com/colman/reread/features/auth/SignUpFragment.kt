@@ -9,14 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.colman.reread.databinding.FragmentSignUpBinding
+import com.colman.reread.model.User
 
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
+    
+    private val viewModel: AuthViewModel by viewModels()
+
     private val countryToCities = mapOf(
         "Israel" to listOf(
             "Tel Aviv", "Jerusalem", "Haifa", "Rishon LeZion", "Petah Tikva", "Ashdod",
@@ -49,6 +55,12 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupDropdowns()
+        setupListeners()
+        observeViewModel()
+    }
+
+    private fun setupDropdowns() {
         val countryInput = binding.etCountry.editText as? AutoCompleteTextView
         val cityInput = binding.etCity.editText as? AutoCompleteTextView
         var activeCountryForCity: String? = null
@@ -93,9 +105,7 @@ class SignUpFragment : Fragment() {
 
         countryInput?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-
             override fun afterTextChanged(s: Editable?) {
                 val selectedCountry = s?.toString().orEmpty().trim()
                 if (countryToCities.containsKey(selectedCountry)) {
@@ -111,10 +121,26 @@ class SignUpFragment : Fragment() {
                 }
             }
         })
+    }
 
+    private fun setupListeners() {
         binding.btnSignUp.setOnClickListener {
             if (validateInputs()) {
-                findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
+                val name = binding.etName.editText?.text?.toString().orEmpty().trim()
+                val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
+                val password = binding.etPassword.editText?.text?.toString().orEmpty()
+                val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
+                val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
+                val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
+
+                val user = User(
+                    name = name,
+                    email = email,
+                    phone = phone,
+                    country = country,
+                    city = city
+                )
+                viewModel.signup(user, password)
             }
         }
 
@@ -123,11 +149,34 @@ class SignUpFragment : Fragment() {
         }
     }
 
+    private fun observeViewModel() {
+        viewModel.authState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is AuthViewModel.AuthState.Loading -> {
+                    binding.btnSignUp.isEnabled = false
+                }
+                is AuthViewModel.AuthState.Success -> {
+                    binding.btnSignUp.isEnabled = true
+                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
+                    viewModel.resetState()
+                }
+                is AuthViewModel.AuthState.Error -> {
+                    binding.btnSignUp.isEnabled = true
+                    Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    binding.btnSignUp.isEnabled = true
+                }
+            }
+        }
+    }
+
     private fun validateInputs(): Boolean {
         var valid = true
         val name = binding.etName.editText?.text?.toString().orEmpty().trim()
         val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
         val password = binding.etPassword.editText?.text?.toString().orEmpty()
+        val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
         val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
         val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
 
@@ -150,6 +199,13 @@ class SignUpFragment : Fragment() {
             valid = false
         } else {
             binding.etPassword.error = null
+        }
+
+        if (phone.isEmpty()) {
+            binding.etPhone.error = "Phone is required"
+            valid = false
+        } else {
+            binding.etPhone.error = null
         }
 
         if (country.isEmpty()) {
