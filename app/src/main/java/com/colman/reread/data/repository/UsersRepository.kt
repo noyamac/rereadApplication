@@ -19,7 +19,7 @@ class UsersRepository private constructor() {
     }
 
     fun signUp(user: User, password: String, completion: (Boolean, String?) -> Unit) {
-        firebaseAuth.signUp(user.email, password) { uid ->
+        firebaseAuth.signUp(user.email, password) { uid, authError ->
             if (uid != null) {
                 val userWithId = user.copy(id = uid)
                 firebaseModel.addUser(userWithId) { saveSuccess ->
@@ -33,15 +33,15 @@ class UsersRepository private constructor() {
                     }
                 }
             } else {
-                mainHandler.post { completion(false, "Sign up failed") }
+                mainHandler.post { completion(false, authError ?: "Sign up failed") }
             }
         }
     }
 
     fun signIn(email: String, password: String, completion: (Boolean, String?) -> Unit) {
-        firebaseAuth.signIn(email, password) { uid ->
+        firebaseAuth.signIn(email, password) { uid, authError ->
             if (uid == null) {
-                mainHandler.post { completion(false, "Invalid email or password") }
+                mainHandler.post { completion(false, authError ?: "Invalid email or password") }
                 return@signIn
             }
 
