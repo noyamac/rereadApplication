@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.colman.reread.R
-import com.colman.reread.data.repository.UsersRepository
+import com.colman.reread.data.repository.UserRepository
 import com.colman.reread.databinding.FragmentProfileBinding
 import com.squareup.picasso.Picasso
 
@@ -34,7 +34,7 @@ class ProfileFragment : Fragment() {
         observeViewModel()
 
         binding.btnLogout.setOnClickListener {
-            UsersRepository.shared.signOut()
+            UserRepository.shared.signOut()
             findNavController().navigate(
                 R.id.signInFragment,
                 bundleOf(),
@@ -49,6 +49,8 @@ class ProfileFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.userData.observe(viewLifecycleOwner) { user ->
+            if (user == null) return@observe
+
             binding.tvName.text = user.name
             binding.tvEmail.text = user.email
             binding.tvPhone.text = user.phone
@@ -63,6 +65,20 @@ class ProfileFragment : Fragment() {
                     .into(binding.ivProfileImage)
             } else {
                 binding.ivProfileImage.setImageResource(R.drawable.ic_person)
+            }
+        }
+
+        viewModel.authRequired.observe(viewLifecycleOwner) { required ->
+            if (required) {
+                findNavController().navigate(
+                    R.id.signInFragment,
+                    bundleOf(),
+                    navOptions {
+                        popUpTo(R.id.nav_graph) {
+                            inclusive = true
+                        }
+                    }
+                )
             }
         }
     }

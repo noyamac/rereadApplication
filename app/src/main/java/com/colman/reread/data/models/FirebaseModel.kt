@@ -1,5 +1,7 @@
 package com.colman.reread.data.models
 
+import com.colman.reread.base.ErrorCompletion
+import com.colman.reread.base.SuccessCompletion
 import com.colman.reread.base.UserCompletion
 import com.colman.reread.model.User
 import com.google.firebase.firestore.firestore
@@ -9,28 +11,28 @@ class FirebaseModel {
 
     private val db = Firebase.firestore
 
-    fun addUser(user: User, completion: (Boolean) -> Unit) {
+    fun addUser(user: User, onSuccess: SuccessCompletion, onError: ErrorCompletion) {
         db.collection("users")
             .document(user.id)
             .set(user)
-            .addOnSuccessListener { completion(true) }
-            .addOnFailureListener { completion(false) }
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { e -> onError(e.localizedMessage ?: "Failed to save user") }
     }
 
-    fun getUserById(id: String, completion: UserCompletion) {
+    fun getUserById(id: String, onSuccess: UserCompletion, onError: ErrorCompletion) {
         db.collection("users")
             .document(id)
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
                     val user = document.toObject(User::class.java)
-                    completion(user)
+                    onSuccess(user)
                 } else {
-                    completion(null)
+                    onSuccess(null)
                 }
             }
-            .addOnFailureListener {
-                completion(null)
+            .addOnFailureListener { e ->
+                onError(e.localizedMessage ?: "Failed to load user")
             }
     }
 }

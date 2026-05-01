@@ -3,12 +3,12 @@ package com.colman.reread.features.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.colman.reread.data.repository.UsersRepository
+import com.colman.reread.data.repository.AuthRepository
 import com.colman.reread.model.User
 
 class AuthViewModel : ViewModel() {
 
-    private val repository = UsersRepository.shared
+    private val repository = AuthRepository.shared
 
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
@@ -22,24 +22,22 @@ class AuthViewModel : ViewModel() {
 
     fun login(email: String, password: String) {
         _authState.value = AuthState.Loading
-        repository.signIn(email, password) { success, message ->
-            if (success) {
-                _authState.value = AuthState.Success
-            } else {
-                _authState.value = AuthState.Error(message ?: "Login failed. Check your credentials.")
-            }
-        }
+        repository.signIn(
+            email = email,
+            password = password,
+            onSuccess = { _authState.value = AuthState.Success },
+            onError = { error -> _authState.value = AuthState.Error(error) }
+        )
     }
 
     fun signup(user: User, password: String) {
         _authState.value = AuthState.Loading
-        repository.signUp(user, password) { success, message ->
-            if (success) {
-                _authState.value = AuthState.Success
-            } else {
-                _authState.value = AuthState.Error(message ?: "Sign up failed")
-            }
-        }
+        repository.signUp(
+            user = user,
+            password = password,
+            onSuccess = { _authState.value = AuthState.Success },
+            onError = { error -> _authState.value = AuthState.Error(error) }
+        )
     }
 
     fun resetState() {
