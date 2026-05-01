@@ -60,7 +60,7 @@ class EditProfileViewModel : ViewModel() {
                 }
             )
         } else {
-            val updated = currentko(name = name, phone = phone, country = country, city = city)
+            val updated = current.copy(name = name, phone = phone, country = country, city = city)
             saveUser(updated)
         }
     }
