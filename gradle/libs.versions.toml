@@ -24,6 +24,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
