@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.model.User
+import com.colman.reread.model.UserRepository
 
 class ProfileViewModel : ViewModel() {
 
@@ -11,18 +12,10 @@ class ProfileViewModel : ViewModel() {
     val userData: LiveData<User> = _userData
 
     init {
-        loadMockUser()
+        loadUser()
     }
 
-    private fun loadMockUser() {
-        _userData.value = User(
-            id = "1",
-            name = "John Doe",
-            email = "john.doe@example.com",
-            phone = "+1 234 567 890",
-            country = "United States",
-            city = "New York",
-            profileImageUrl = ""
-        )
+    private fun loadUser() {
+        _userData.value = UserRepository.currentUser
     }
 }

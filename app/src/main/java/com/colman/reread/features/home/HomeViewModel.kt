@@ -19,7 +19,9 @@ class HomeViewModel : ViewModel() {
             description = "Like New - Hardcover",
             summary = "A story of wealth, love, and the American Dream in the 1920s.",
             imageUrl = "https://covers.openlibrary.org/b/id/7222246-L.jpg",
-            contactPhone = "050-1234567"
+            contactPhone = "050-1234567",
+            sellerName = "Alice Smith",
+            sellerEmail = "alice@example.com"
         ),
         Book(
             id = "2",
@@ -29,7 +31,9 @@ class HomeViewModel : ViewModel() {
             description = "Good - Minor wear on cover",
             summary = "A dystopian novel about totalitarianism, surveillance, and control.",
             imageUrl = "https://covers.openlibrary.org/b/id/15102551-L.jpg",
-            contactPhone = "052-9876543"
+            contactPhone = "052-9876543",
+            sellerName = "John Doe",
+            sellerEmail = "john.doe@example.com"
         ),
         Book(
             id = "3",
@@ -39,7 +43,9 @@ class HomeViewModel : ViewModel() {
             description = "New - Paperback",
             summary = "A classic tale of justice and childhood in the Deep South.",
             imageUrl = "https://covers.openlibrary.org/b/id/8226191-L.jpg",
-            contactPhone = "054-5554433"
+            contactPhone = "054-5554433",
+            sellerName = "Bob Brown",
+            sellerEmail = "bob@example.com"
         ),
         Book(
             id = "4",
@@ -49,7 +55,9 @@ class HomeViewModel : ViewModel() {
             description = "Acceptable - Yellowed pages",
             summary = "A story about teenage angst and alienation in New York City.",
             imageUrl = "https://covers.openlibrary.org/b/id/8231992-L.jpg",
-            contactPhone = "050-0001112"
+            contactPhone = "050-0001112",
+            sellerName = "John Doe",
+            sellerEmail = "john.doe@example.com"
         ),
         Book(
             id = "5",
@@ -59,7 +67,9 @@ class HomeViewModel : ViewModel() {
             description = "Very Good - Pocket edition",
             summary = "A romantic masterpiece about manners, marriage, and morality.",
             imageUrl = "https://covers.openlibrary.org/b/id/14578132-L.jpg",
-            contactPhone = "058-7778899"
+            contactPhone = "058-7778899",
+            sellerName = "Charlie Davis",
+            sellerEmail = "charlie@example.com"
         )
     )
 

@@ -12,5 +12,7 @@ data class Book(
     val description: String,
     val summary: String,
     val imageUrl: String,
-    val contactPhone: String
+    val contactPhone: String,
+    val sellerName: String,
+    val sellerEmail: String
 ) : Parcelable

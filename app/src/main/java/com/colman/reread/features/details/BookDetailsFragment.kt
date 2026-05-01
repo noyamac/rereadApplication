@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.colman.reread.R
-import androidx.navigation.fragment.findNavController
 import com.colman.reread.databinding.FragmentBookDetailsBinding
 import com.colman.reread.model.Book
 import com.squareup.picasso.Picasso
@@ -45,6 +45,8 @@ class BookDetailsFragment : Fragment() {
         binding.tvPrice.text = getString(R.string.price_format, book.price)
         binding.tvDescription.text = book.description
         binding.tvSummary.text = book.summary
+        binding.tvSellerName.text = book.sellerName
+        binding.tvSellerEmail.text = book.sellerEmail
 
         val placeholder = R.drawable.default_book_cover
         if (book.imageUrl.isNotEmpty()) {
