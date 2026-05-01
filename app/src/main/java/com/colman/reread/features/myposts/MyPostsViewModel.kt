@@ -15,7 +15,6 @@ class MyPostsViewModel : ViewModel() {
     }
 
     private fun loadMockMyPosts() {
-        // Mocking books that belong to the "logged in user" (John Doe)
         _books.value = listOf(
             Book(
                 id = "2",
