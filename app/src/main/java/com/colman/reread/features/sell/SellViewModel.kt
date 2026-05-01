@@ -3,6 +3,7 @@ package com.colman.reread.features.sell
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.colman.reread.R
 import com.colman.reread.model.Book
 
 class SellViewModel : ViewModel() {
@@ -12,7 +13,7 @@ class SellViewModel : ViewModel() {
 
     sealed class PostStatus {
         object Success : PostStatus()
-        data class Error(val message: String) : PostStatus()
+        data class Error(val messageResId: Int) : PostStatus()
         object Idle : PostStatus()
     }
 
@@ -27,13 +28,13 @@ class SellViewModel : ViewModel() {
     ) {
         if (title.isBlank() || author.isBlank() || priceStr.isBlank() || 
             description.isBlank() || summary.isBlank() || contactPhone.isBlank()) {
-            _postStatus.value = PostStatus.Error("Please fill all required fields")
+            _postStatus.value = PostStatus.Error(R.string.error_empty_fields)
             return
         }
 
         val price = priceStr.toDoubleOrNull()
         if (price == null) {
-            _postStatus.value = PostStatus.Error("Please enter a valid price")
+            _postStatus.value = PostStatus.Error(R.string.error_invalid_price)
             return
         }
 

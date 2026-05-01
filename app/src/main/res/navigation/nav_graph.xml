@@ -55,8 +55,9 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.colman.reread.features.PlaceholderFragment"
-        android:label="@string/nav_profile" />
+        android:name="com.colman.reread.features.profile.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/bookDetailsFragment"
