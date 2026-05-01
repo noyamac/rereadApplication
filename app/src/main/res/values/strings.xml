@@ -69,7 +69,7 @@
     <string name="hint_edit_country">Country *</string>
     <string name="hint_edit_city">City *</string>
     <string name="hint_profile_image_url">Profile Image URL</string>
-    <string name="btn_change_image">Update Image Preview</string>
+    <string name="btn_change_image">Update Image</string>
     <string name="btn_save_profile">Save Changes</string>
     <string name="success_profile_update">Profile updated successfully!</string>
 
