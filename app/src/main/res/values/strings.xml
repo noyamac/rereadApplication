@@ -30,6 +30,7 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Full Name</string>
+    <string name="hint_phone">Phone</string>
     <string name="hint_country">Country</string>
     <string name="hint_city">City</string>
     <string name="btn_sign_in">Sign In</string>
@@ -59,11 +60,12 @@
     <string name="profile_label_country">Country</string>
     <string name="profile_label_city">City</string>
     <string name="profile_edit_button">Edit Profile</string>
+    <string name="profile_logout_button">Logout</string>
 
     <!-- Edit Profile Page -->
     <string name="edit_profile_title">Edit Profile</string>
     <string name="hint_edit_name">Full Name *</string>
-    <string name="hint_phone">Phone Number *</string>
+    <string name="hint_edit_phone">Phone Number *</string>
     <string name="hint_edit_country">Country *</string>
     <string name="hint_edit_city">City *</string>
     <string name="hint_profile_image_url">Profile Image URL</string>

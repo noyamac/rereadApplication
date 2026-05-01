@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.R
+import com.colman.reread.data.repository.UserRepository
 import com.colman.reread.model.Book
 import com.colman.reread.model.BookRepository
-import com.colman.reread.model.UserRepository
 
 class SellViewModel : ViewModel() {
+
+    private val userRepository = UserRepository.shared
 
     private val _postStatus = MutableLiveData<PostStatus>()
     val postStatus: LiveData<PostStatus> = _postStatus
@@ -28,8 +30,9 @@ class SellViewModel : ViewModel() {
         contactPhone: String,
         imageUrl: String
     ) {
-        if (title.isBlank() || author.isBlank() || priceStr.isBlank() || 
-            description.isBlank() || summary.isBlank() || contactPhone.isBlank()) {
+        if (title.isBlank() || author.isBlank() || priceStr.isBlank() ||
+            description.isBlank() || summary.isBlank() || contactPhone.isBlank()
+        ) {
             _postStatus.value = PostStatus.Error(R.string.error_empty_fields)
             return
         }
@@ -40,22 +43,23 @@ class SellViewModel : ViewModel() {
             return
         }
 
-        val user = UserRepository.currentUser
-        val newBook = Book(
-            id = System.currentTimeMillis().toString(),
-            title = title,
-            author = author,
-            price = price,
-            description = description,
-            summary = summary,
-            imageUrl = imageUrl.ifBlank { "" },
-            contactPhone = contactPhone,
-            sellerName = user.name,
-            sellerEmail = user.email
-        )
+        userRepository.getCurrentUser { user ->
+            val newBook = Book(
+                id = System.currentTimeMillis().toString(),
+                title = title,
+                author = author,
+                price = price,
+                description = description,
+                summary = summary,
+                imageUrl = imageUrl.ifBlank { "" },
+                contactPhone = contactPhone,
+                sellerName = user?.name ?: "",
+                sellerEmail = user?.email ?: ""
+            )
 
-        BookRepository.addBook(newBook)
-        _postStatus.value = PostStatus.Success
+            BookRepository.addBook(newBook)
+            _postStatus.value = PostStatus.Success
+        }
     }
 
     fun resetStatus() {
