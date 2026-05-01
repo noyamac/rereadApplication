@@ -62,15 +62,25 @@
         android:id="@+id/profileFragment"
         android:name="com.colman.reread.features.profile.ProfileFragment"
         android:label="@string/nav_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/bookDetailsFragment"
         android:name="com.colman.reread.features.details.BookDetailsFragment"
-        android:label="Book Details"
+        android:label="@string/title_book_details"
         tools:layout="@layout/fragment_book_details">
         <argument
             android:name="book"
             app:argType="com.colman.reread.model.Book" />
     </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.colman.reread.features.profile.EditProfileFragment"
+        android:label="@string/edit_profile_title"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.colman.reread.R
 import com.colman.reread.databinding.FragmentProfileBinding
 import com.squareup.picasso.Picasso
@@ -27,7 +28,16 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        setupListeners()
         observeViewModel()
+    }
+
+    private fun setupListeners() {
+        binding.btnEditProfile.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun observeViewModel() {
