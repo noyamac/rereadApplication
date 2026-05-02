@@ -13,6 +13,9 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE id = :userId")
     fun getUserById(userId: String): LiveData<User?>
 
+    @Query("SELECT * FROM User WHERE id = :userId")
+    fun getUserByIdSync(userId: String): User?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUsers(vararg users: User )
 

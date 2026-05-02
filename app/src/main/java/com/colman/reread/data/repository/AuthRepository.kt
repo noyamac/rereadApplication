@@ -37,7 +37,9 @@ class AuthRepository private constructor() {
                     firebaseModel.addUser(
                         user = userToSave,
                         onSuccess = {
-                            mainHandler.post { onSuccess() }
+                            UserRepository.shared.addUser(userToSave) {
+                                onSuccess()
+                            }
                         },
                         onError = {
                             mainHandler.post {
@@ -85,22 +87,16 @@ class AuthRepository private constructor() {
             email = email,
             password = password,
             onSuccess = { uid ->
-                firebaseModel.getUserById(
-                    id = uid,
-                    onSuccess = { user ->
+                UserRepository.shared.getCurrentUser { user ->
+                    if (user != null) {
+                        mainHandler.post { onSuccess() }
+                    } else {
                         mainHandler.post {
-                            if (user != null) {
-                                onSuccess()
-                            } else {
-                                firebaseAuth.signOut()
-                                onError("User is not registered in database")
-                            }
+                            firebaseAuth.signOut()
+                            onError("User is not registered in database or failed to verify")
                         }
-                    },
-                    onError = {
-                        mainHandler.post { onError("Failed to verify user profile. Please try again") }
                     }
-                )
+                }
             },
             onError = { error ->
                 mainHandler.post { onError(error) }

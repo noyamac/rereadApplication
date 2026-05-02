@@ -15,12 +15,12 @@ class HomeViewModel : ViewModel() {
     val books: LiveData<List<Book>> = _books
 
     init {
-        _books.addSource(BookRepository.books) { allBooks ->
+        _books.addSource(BookRepository.shared.books) { allBooks ->
             filterBooks(allBooks, _searchQuery.value ?: "")
         }
         
         _books.addSource(_searchQuery) { query ->
-            filterBooks(BookRepository.books.value ?: emptyList(), query)
+            filterBooks(BookRepository.shared.books.value ?: emptyList(), query)
         }
     }
 

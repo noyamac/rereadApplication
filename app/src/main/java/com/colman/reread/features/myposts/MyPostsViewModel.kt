@@ -20,13 +20,13 @@ class MyPostsViewModel : ViewModel() {
     private val _deleteStatus = MutableLiveData<DeleteStatus>(DeleteStatus.Idle)
     val deleteStatus: LiveData<DeleteStatus> = _deleteStatus
 
-    val books: LiveData<List<Book>> = BookRepository.books.map { allBooks ->
+    val books: LiveData<List<Book>> = BookRepository.shared.books.map { allBooks ->
         val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
         allBooks.filter { it.sellerEmail == currentUserEmail }
     }
 
     fun deleteBook(book: Book) {
-        BookRepository.deleteBook(book.id) { success ->
+        BookRepository.shared.deleteBook(book.id) { success ->
             if (success) {
                 _deleteStatus.value = DeleteStatus.Success(book.title)
             } else {

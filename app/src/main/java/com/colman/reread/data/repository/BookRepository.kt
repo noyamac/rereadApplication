@@ -9,8 +9,11 @@ import com.colman.reread.data.models.FirebaseModel
 import com.colman.reread.model.Book
 import java.util.concurrent.Executors
 
-object BookRepository {
-    private const val tag = "BookRepository"
+class BookRepository private constructor() {
+    companion object {
+        val shared = BookRepository()
+    }
+    private val tag = "BookRepository"
 
     private val firebaseModel = FirebaseModel()
     private val localDb = AppLocalDb.db

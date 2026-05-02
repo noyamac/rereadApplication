@@ -63,7 +63,7 @@ class SellViewModel : ViewModel() {
                     sellerEmail = user?.email ?: ""
                 )
 
-                BookRepository.addBook(newBook) { success ->
+                BookRepository.shared.addBook(newBook) { success ->
                     if (success) {
                         _postStatus.value = PostStatus.Success
                     } else {

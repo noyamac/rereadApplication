@@ -61,7 +61,7 @@ class EditPostViewModel : ViewModel() {
                 sellerName = sellerName,
                 sellerEmail = sellerEmail
             )
-            BookRepository.updateBook(updatedBook) { success ->
+            BookRepository.shared.updateBook(updatedBook) { success ->
                 if (success) {
                     _updateStatus.value = UpdateStatus.Success
                 } else {
