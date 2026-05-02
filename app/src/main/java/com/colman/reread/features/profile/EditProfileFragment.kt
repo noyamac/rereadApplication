@@ -6,15 +6,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.colman.reread.R
 import com.colman.reread.base.loadBitmapFromUri
+import com.colman.reread.data.repository.RemoteCountryRepository
 import com.colman.reread.databinding.FragmentEditProfileBinding
+import com.colman.reread.model.Country
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 class EditProfileFragment : Fragment() {
 
@@ -52,16 +57,35 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupDropdowns()
         observeViewModel()
         setupListeners()
+    }
+
+    private fun setupDropdowns() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val countries: List<Country> = RemoteCountryRepository.shared.getCountries()
+                val countryNames = countries.mapNotNull { it.name }.sorted()
+                val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countryNames)
+                binding.actvCountry.setAdapter(countryAdapter)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed to load countries", Toast.LENGTH_SHORT).show()
+            }
+        }
+        
+        binding.actvCountry.threshold = 1
+        binding.actvCountry.setOnClickListener { binding.actvCountry.showDropDown() }
+        binding.actvCountry.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.actvCountry.showDropDown()
+        }
     }
 
     private fun observeViewModel() {
         viewModel.user.observe(viewLifecycleOwner) { user ->
             binding.etName.setText(user.name)
             binding.etPhone.setText(user.phone)
-            binding.etCountry.setText(user.country)
-            binding.etCity.setText(user.city)
+            binding.actvCountry.setText(user.country, false)
             updateProfileImage(user.profileImageUrl)
         }
 
@@ -84,8 +108,7 @@ class EditProfileFragment : Fragment() {
             viewModel.saveProfile(
                 name = binding.etName.text.toString(),
                 phone = binding.etPhone.text.toString(),
-                country = binding.etCountry.text.toString(),
-                city = binding.etCity.text.toString(),
+                country = binding.actvCountry.text.toString(),
                 profileImage = selectedProfileImage
             )
         }

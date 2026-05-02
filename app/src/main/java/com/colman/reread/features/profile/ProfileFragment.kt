@@ -69,7 +69,6 @@ class ProfileFragment : Fragment() {
             binding.tvEmail.text = user.email
             binding.tvPhone.text = user.phone
             binding.tvCountry.text = user.country
-            binding.tvCity.text = user.city
             
             if (user.profileImageUrl.isNotEmpty()) {
                 Picasso.get()
