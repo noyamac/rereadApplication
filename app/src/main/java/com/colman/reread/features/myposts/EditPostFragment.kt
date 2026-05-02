@@ -69,7 +69,6 @@ class EditPostFragment : Fragment() {
         binding.etDescription.setText(book.description)
         binding.etSummary.setText(book.summary)
         binding.etContactPhone.setText(book.contactPhone)
-        binding.etImageUrl.setText(book.imageUrl)
 
         updateImagePreview(book.imageUrl)
     }
@@ -84,7 +83,7 @@ class EditPostFragment : Fragment() {
                 description = binding.etDescription.text.toString(),
                 summary = binding.etSummary.text.toString(),
                 contactPhone = binding.etContactPhone.text.toString(),
-                imageUrl = binding.etImageUrl.text.toString(),
+                imageUrl = args.book.imageUrl,
                 image = selectedBookImage,
                 sellerName = args.book.sellerName,
                 sellerEmail = args.book.sellerEmail
