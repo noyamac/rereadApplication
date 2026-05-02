@@ -8,6 +8,7 @@ import com.colman.reread.R
 import com.colman.reread.data.models.StorageModel
 import com.colman.reread.data.repository.UserRepository
 import com.colman.reread.model.Book
+import com.colman.reread.model.BookRepository
 
 class SellViewModel : ViewModel() {
 
@@ -32,8 +33,9 @@ class SellViewModel : ViewModel() {
         contactPhone: String,
         image: Bitmap?
     ) {
-        if (title.isBlank() || author.isBlank() || priceStr.isBlank() || 
-            description.isBlank() || summary.isBlank() || contactPhone.isBlank()) {
+        if (title.isBlank() || author.isBlank() || priceStr.isBlank() ||
+            description.isBlank() || summary.isBlank() || contactPhone.isBlank()
+        ) {
             _postStatus.value = PostStatus.Error(R.string.error_empty_fields)
             return
         }
@@ -73,10 +75,11 @@ class SellViewModel : ViewModel() {
                         sellerEmail = user?.email ?: ""
                     )
 
-                    // TODO: In the future, save newBook to a repository/database
+                    BookRepository.addBook(newBook)
                     _postStatus.value = PostStatus.Success
                 }
             )
+
         }
     }
 
