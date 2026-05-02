@@ -5,15 +5,18 @@ import android.os.Looper
 import com.colman.reread.base.ErrorCompletion
 import com.colman.reread.base.SuccessCompletion
 import com.colman.reread.base.UserCompletion
+import com.colman.reread.dao.AppLocalDb
+import com.colman.reread.dao.AppLocalDbRepository
 import com.colman.reread.data.models.FirebaseAuthModel
 import com.colman.reread.data.models.FirebaseModel
+import com.colman.reread.model.Book
 import com.colman.reread.model.User
 
 class UserRepository private constructor() {
 
     private val firebaseModel = FirebaseModel()
     private val firebaseAuth = FirebaseAuthModel()
-
+    private val database: AppLocalDbRepository = AppLocalDb.db
     private val mainHandler = Handler.createAsync(Looper.getMainLooper())
 
     var currentUser: User? = null
@@ -22,6 +25,14 @@ class UserRepository private constructor() {
     companion object {
         val shared = UserRepository()
     }
+
+    fun addUser(user: User) = {
+        database.userDao.insertUsers(user)
+    }
+    fun deleteUser(user: User) = {
+        database.userDao.delete(user)
+    }
+    fun getUserById(userId: String) = database.userDao.getUserById(userId)
 
     fun getCurrentUser(completion: UserCompletion) {
         val uid = firebaseAuth.getUserId()
