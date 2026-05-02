@@ -46,39 +46,42 @@ class SellViewModel : ViewModel() {
             return
         }
 
-        if (image == null) {
-            _postStatus.value = PostStatus.Error(R.string.error_select_book_image)
-            return
-        }
-
         val bookId = System.currentTimeMillis().toString()
 
         userRepository.getCurrentUser { user ->
-            storageModel.uploadImage(
-                folderPath = "books/$bookId",
-                image = image,
-                completion = { uploadedImageUrl ->
-                    if (uploadedImageUrl == null) {
-                        _postStatus.value = PostStatus.Error(R.string.error_upload_book_image)
-                        return@uploadImage
-                    }
-                    val newBook = Book(
-                        id = bookId,
-                        title = title,
-                        author = author,
-                        price = price,
-                        description = description,
-                        summary = summary,
-                        imageUrl = uploadedImageUrl,
-                        contactPhone = contactPhone,
-                        sellerName = user?.name ?: "",
-                        sellerEmail = user?.email ?: ""
-                    )
+            fun saveBook(finalImageUrl: String) {
+                val newBook = Book(
+                    id = bookId,
+                    title = title,
+                    author = author,
+                    price = price,
+                    description = description,
+                    summary = summary,
+                    imageUrl = finalImageUrl,
+                    contactPhone = contactPhone,
+                    sellerName = user?.name ?: "",
+                    sellerEmail = user?.email ?: ""
+                )
 
-                    BookRepository.addBook(newBook)
-                    _postStatus.value = PostStatus.Success
-                }
-            )
+                BookRepository.addBook(newBook)
+                _postStatus.value = PostStatus.Success
+            }
+
+            if (image != null) {
+                storageModel.uploadImage(
+                    folderPath = "books/$bookId",
+                    image = image,
+                    completion = { uploadedImageUrl ->
+                        if (uploadedImageUrl == null) {
+                            _postStatus.value = PostStatus.Error(R.string.error_upload_book_image)
+                            return@uploadImage
+                        }
+                        saveBook(uploadedImageUrl)
+                    }
+                )
+            } else {
+                saveBook("")
+            }
 
         }
     }
