@@ -8,7 +8,7 @@ import com.colman.reread.R
 import com.colman.reread.data.models.StorageModel
 import com.colman.reread.data.repository.UserRepository
 import com.colman.reread.model.Book
-import com.colman.reread.model.BookRepository
+import com.colman.reread.data.repository.BookRepository
 
 class SellViewModel : ViewModel() {
 
@@ -63,8 +63,13 @@ class SellViewModel : ViewModel() {
                     sellerEmail = user?.email ?: ""
                 )
 
-                BookRepository.addBook(newBook)
-                _postStatus.value = PostStatus.Success
+                BookRepository.addBook(newBook) { success ->
+                    if (success) {
+                        _postStatus.value = PostStatus.Success
+                    } else {
+                        _postStatus.value = PostStatus.Error(R.string.error_upload_book_data)
+                    }
+                }
             }
 
             if (image != null) {

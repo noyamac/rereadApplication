@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.colman.reread.R
 import com.colman.reread.data.models.StorageModel
 import com.colman.reread.model.Book
-import com.colman.reread.model.BookRepository
+import com.colman.reread.data.repository.BookRepository
 
 class EditPostViewModel : ViewModel() {
 
@@ -61,8 +61,13 @@ class EditPostViewModel : ViewModel() {
                 sellerName = sellerName,
                 sellerEmail = sellerEmail
             )
-            BookRepository.updateBook(updatedBook)
-            _updateStatus.value = UpdateStatus.Success
+            BookRepository.updateBook(updatedBook) { success ->
+                if (success) {
+                    _updateStatus.value = UpdateStatus.Success
+                } else {
+                    _updateStatus.value = UpdateStatus.Error(R.string.error_upload_book_data)
+                }
+            }
         }
 
         if (image != null) {
