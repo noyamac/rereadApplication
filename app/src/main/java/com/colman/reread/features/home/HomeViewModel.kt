@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.model.Book
-import com.colman.reread.model.BookRepository
+import com.colman.reread.data.repository.BookRepository
 
 class HomeViewModel : ViewModel() {
 

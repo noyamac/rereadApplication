@@ -30,7 +30,6 @@ class MyPostsFragment : Fragment() {
         },
         onDeleteClick = { book ->
             viewModel.deleteBook(book)
-            Toast.makeText(context, getString(R.string.toast_delete_clicked, book.title), Toast.LENGTH_SHORT).show()
         }
     )
 
@@ -52,6 +51,22 @@ class MyPostsFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.books.observe(viewLifecycleOwner) { books ->
             adapter.submitList(books)
+        }
+
+        viewModel.deleteStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                is MyPostsViewModel.DeleteStatus.Success -> {
+                    Toast.makeText(context, getString(R.string.toast_delete_clicked, status.bookTitle), Toast.LENGTH_SHORT).show()
+                    viewModel.resetDeleteStatus()
+                }
+                is MyPostsViewModel.DeleteStatus.Error -> {
+                    Toast.makeText(context, getString(status.messageResId), Toast.LENGTH_SHORT).show()
+                    viewModel.resetDeleteStatus()
+                }
+                MyPostsViewModel.DeleteStatus.Idle -> {
+                    // Do nothing
+                }
+            }
         }
     }
 
