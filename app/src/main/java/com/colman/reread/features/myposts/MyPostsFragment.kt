@@ -64,7 +64,6 @@ class MyPostsFragment : Fragment() {
                     viewModel.resetDeleteStatus()
                 }
                 MyPostsViewModel.DeleteStatus.Idle -> {
-                    // Do nothing
                 }
             }
         }

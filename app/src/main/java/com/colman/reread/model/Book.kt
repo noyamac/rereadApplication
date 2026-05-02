@@ -1,11 +1,15 @@
 package com.colman.reread.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.firebase.Timestamp
 import kotlinx.parcelize.Parcelize
 
+@Entity(tableName = "Book")
 @Parcelize
 data class Book(
+    @PrimaryKey
     val id: String,
     val title: String,
     val author: String,

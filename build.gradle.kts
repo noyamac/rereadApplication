@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.navigation.safeargs) apply false
     alias (libs.plugins.gms.google.services) apply false
+    alias(libs.plugins.android.room) apply false
 }

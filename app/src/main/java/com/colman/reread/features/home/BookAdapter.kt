@@ -3,6 +3,7 @@ package com.colman.reread.features.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -66,7 +67,8 @@ class BookAdapter(
         }
 
         private fun showPopupMenu(view: View, book: Book) {
-            val popup = PopupMenu(view.context, view)
+            val context = ContextThemeWrapper(view.context, R.style.Theme_Reread)
+            val popup = PopupMenu(context, view)
             popup.menuInflater.inflate(R.menu.menu_book_item_actions, popup.menu)
             
             popup.setOnMenuItemClickListener { menuItem ->

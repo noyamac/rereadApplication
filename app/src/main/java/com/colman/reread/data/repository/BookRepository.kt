@@ -1,23 +1,33 @@
 package com.colman.reread.data.repository
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.colman.reread.dao.AppLocalDb
 import com.colman.reread.data.models.FirebaseModel
 import com.colman.reread.model.Book
+import java.util.concurrent.Executors
 
-object BookRepository {
-    private const val tag = "BookRepository"
+class BookRepository private constructor() {
+    companion object {
+        val shared = BookRepository()
+    }
+    private val tag = "BookRepository"
 
     private val firebaseModel = FirebaseModel()
+    private val localDb = AppLocalDb.db
+    private val executor = Executors.newSingleThreadExecutor()
+    private val mainHandler = Handler.createAsync(Looper.getMainLooper())
 
-    private val _books = MutableLiveData<List<Book>>()
-    val books: LiveData<List<Book>> = _books
+    val books: LiveData<List<Book>> = localDb.bookDao.getAllBooks()
 
     init {
         firebaseModel.listenToBooks(
             onBooksUpdated = { bookList ->
-                _books.postValue(bookList)
+                executor.execute {
+                    localDb.bookDao.insertBooks(*bookList.toTypedArray())
+                }
             },
             onError = { error ->
                 Log.e(tag, "Error fetching books snapshot: $error")
@@ -28,10 +38,15 @@ object BookRepository {
     fun addBook(book: Book, onComplete: ((Boolean) -> Unit)? = null) {
         firebaseModel.addBook(
             book = book,
-            onSuccess = { onComplete?.invoke(true) },
+            onSuccess = {
+                executor.execute {
+                    localDb.bookDao.insertBooks(book)
+                    mainHandler.post { onComplete?.invoke(true) }
+                }
+            },
             onError = { e ->
                 Log.e(tag, "Error adding book: $e")
-                onComplete?.invoke(false)
+                mainHandler.post { onComplete?.invoke(false) }
             }
         )
     }
@@ -39,10 +54,15 @@ object BookRepository {
     fun updateBook(updatedBook: Book, onComplete: ((Boolean) -> Unit)? = null) {
         firebaseModel.updateBook(
             book = updatedBook,
-            onSuccess = { onComplete?.invoke(true) },
+            onSuccess = {
+                executor.execute {
+                    localDb.bookDao.insertBooks(updatedBook)
+                    mainHandler.post { onComplete?.invoke(true) }
+                }
+            },
             onError = { e ->
                 Log.e(tag, "Error updating book: $e")
-                onComplete?.invoke(false)
+                mainHandler.post { onComplete?.invoke(false) }
             }
         )
     }
@@ -50,10 +70,15 @@ object BookRepository {
     fun deleteBook(bookId: String, onComplete: ((Boolean) -> Unit)? = null) {
         firebaseModel.deleteBook(
             bookId = bookId,
-            onSuccess = { onComplete?.invoke(true) },
+            onSuccess = {
+                executor.execute {
+                    localDb.bookDao.deleteById(bookId)
+                    mainHandler.post { onComplete?.invoke(true) }
+                }
+            },
             onError = { e ->
                 Log.e(tag, "Error deleting book: $e")
-                onComplete?.invoke(false)
+                mainHandler.post { onComplete?.invoke(false) }
             }
         )
     }

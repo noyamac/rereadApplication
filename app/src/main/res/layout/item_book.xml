@@ -66,41 +66,34 @@
             android:textAppearance="?attr/textAppearanceLabelLarge"
             android:textColor="@color/tertiary"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/actions_container"
+            app:layout_constraintBottom_toTopOf="@id/btn_details"
             app:layout_constraintStart_toStartOf="@id/book_title"
             tools:text="0.0$" />
 
-        <LinearLayout
-            android:id="@+id/actions_container"
+        <ImageButton
+            android:id="@+id/btn_options"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/content_description_options"
+            android:src="@drawable/ic_more_vert"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_details"
+            app:tint="?attr/colorOnSurfaceVariant"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_details"
+            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            android:text="@string/btn_details"
+            android:textSize="12sp"
+            android:textColor="@color/onSecondaryContainer"
+            app:backgroundTint="@color/secondaryContainer"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageButton
-                android:id="@+id/btn_options"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Options"
-                android:src="@drawable/ic_more_vert"
-                android:visibility="gone"
-                app:tint="?attr/colorOnSurfaceVariant"
-                tools:visibility="visible" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_details"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_details"
-                android:textSize="12sp"
-                android:textColor="@color/onSecondaryContainer"
-                app:backgroundTint="@color/secondaryContainer" />
-
-        </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
