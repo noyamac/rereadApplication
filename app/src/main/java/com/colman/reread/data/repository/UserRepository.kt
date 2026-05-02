@@ -16,6 +16,9 @@ class UserRepository private constructor() {
 
     private val mainHandler = Handler.createAsync(Looper.getMainLooper())
 
+    var currentUser: User? = null
+        private set
+
     companion object {
         val shared = UserRepository()
     }
@@ -26,25 +29,35 @@ class UserRepository private constructor() {
             firebaseModel.getUserById(
                 id = uid,
                 onSuccess = { user ->
+                    currentUser = user
                     mainHandler.post { completion(user) }
                 },
                 onError = {
+                    currentUser = null
                     mainHandler.post { completion(null) }
                 }
             )
         } else {
+            currentUser = null
             mainHandler.post { completion(null) }
         }
     }
 
     fun isUserLoggedIn(): Boolean = firebaseAuth.isUserLoggedIn()
 
-    fun signOut() = firebaseAuth.signOut()
+    fun signOut() {
+        currentUser = null
+        firebaseAuth.signOut()
+    }
 
     fun updateUser(user: User, onSuccess: SuccessCompletion, onError: ErrorCompletion) {
         firebaseModel.addUser(
             user = user,
-            onSuccess = { mainHandler.post { onSuccess() } },
+            onSuccess = {
+                currentUser = user
+                firebaseModel.updateSellerNameInBooks(user.email, user.name)
+                mainHandler.post { onSuccess() }
+            },
             onError = { err -> mainHandler.post { onError(err) } }
         )
     }

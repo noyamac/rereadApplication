@@ -77,4 +77,17 @@ class FirebaseModel {
                 }
             }
     }
+
+    fun updateSellerNameInBooks(email: String, newName: String) {
+        db.collection("books")
+            .whereEqualTo(Book.SELLER_EMAIL_KEY, email)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val batch = db.batch()
+                for (doc in snapshot.documents) {
+                    batch.update(doc.reference, Book.SELLER_NAME_KEY, newName)
+                }
+                batch.commit()
+            }
+    }
 }
