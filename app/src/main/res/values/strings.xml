@@ -38,6 +38,12 @@
     <string name="go_to_sign_up">Don\'t have an account? Sign Up</string>
     <string name="go_to_sign_in">Already have an account? Sign In</string>
 
+
+    <!-- Edit Post Page -->
+    <string name="edit_post_title">Edit Post</string>
+    <string name="btn_update_post">Update Post</string>
+    <string name="success_update">Post updated successfully!</string>
+
     <!-- Details Page -->
     <string name="label_condition">CONDITION</string>
     <string name="label_summary">SUMMARY</string>

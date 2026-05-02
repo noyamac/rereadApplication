@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.colman.reread.R
 import com.colman.reread.databinding.FragmentMyPostsBinding
 import com.colman.reread.features.home.BookAdapter
 
@@ -24,11 +25,12 @@ class MyPostsFragment : Fragment() {
             findNavController().navigate(action)
         },
         onEditClick = { book ->
-            Toast.makeText(context, "Edit: ${book.title}", Toast.LENGTH_SHORT).show()
+            val action = MyPostsFragmentDirections.actionMyPostsFragmentToEditPostFragment(book)
+            findNavController().navigate(action)
         },
         onDeleteClick = { book ->
             viewModel.deleteBook(book)
-            Toast.makeText(context, "Deleted: ${book.title}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.toast_delete_clicked, book.title), Toast.LENGTH_SHORT).show()
         }
     )
 
