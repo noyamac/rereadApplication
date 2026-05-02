@@ -49,6 +49,11 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadCurrentUser()
+    }
+
     private fun setupListeners() {
         binding.btnEditProfile.setOnClickListener {
             val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
