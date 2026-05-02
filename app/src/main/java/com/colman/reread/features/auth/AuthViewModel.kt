@@ -1,5 +1,6 @@
 package com.colman.reread.features.auth
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,11 +31,12 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    fun signup(user: User, password: String) {
+    fun signup(user: User, password: String, profileImage: Bitmap?) {
         _authState.value = AuthState.Loading
         repository.signUp(
             user,
             password,
+            profileImage,
             onSuccess = { _authState.value = AuthState.Success },
             onError = { error -> _authState.value = AuthState.Error(error) }
         )

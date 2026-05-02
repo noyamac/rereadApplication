@@ -1,21 +1,46 @@
 package com.colman.reread.features.sell
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.colman.reread.R
+import com.colman.reread.base.loadBitmapFromUri
 import com.colman.reread.databinding.FragmentSellBinding
+import com.google.android.material.snackbar.Snackbar
 
 class SellFragment : Fragment() {
 
     private var _binding: FragmentSellBinding? = null
     private val binding get() = _binding!!
+    private var selectedBookImage: Bitmap? = null
 
     private val viewModel: SellViewModel by viewModels()
+
+    private val imagePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri ?: return@registerForActivityResult
+        loadBookImageFromUri(uri)
+    }
+
+    private fun loadBookImageFromUri(uri: Uri) {
+        val bitmap = loadBitmapFromUri(requireContext(), uri)
+        if (bitmap != null) {
+            selectedBookImage = bitmap
+            binding.ivBookImagePreview.setImageBitmap(bitmap)
+        } else {
+            selectedBookImage = null
+            binding.ivBookImagePreview.setImageResource(R.drawable.default_book_cover)
+            Snackbar.make(binding.root, "Failed to load image", Snackbar.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +58,10 @@ class SellFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.btnSelectBookImage.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
+        }
+
         binding.btnSubmit.setOnClickListener {
             viewModel.postBook(
                 title = binding.etTitle.text.toString(),
@@ -41,7 +70,7 @@ class SellFragment : Fragment() {
                 description = binding.etDescription.text.toString(),
                 summary = binding.etSummary.text.toString(),
                 contactPhone = binding.etContactPhone.text.toString(),
-                imageUrl = binding.etImageUrl.text.toString()
+                image = selectedBookImage
             )
         }
     }
@@ -71,7 +100,8 @@ class SellFragment : Fragment() {
         binding.etDescription.text?.clear()
         binding.etSummary.text?.clear()
         binding.etContactPhone.text?.clear()
-        binding.etImageUrl.text?.clear()
+        selectedBookImage = null
+        binding.ivBookImagePreview.setImageResource(R.drawable.default_book_cover)
     }
 
     override fun onDestroyView() {

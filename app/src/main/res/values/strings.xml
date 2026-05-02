@@ -19,9 +19,13 @@
     <string name="hint_summary">Plot Summary *</string>
     <string name="hint_contact_phone">Contact Phone *</string>
     <string name="hint_image_url">Cover Image URL</string>
+    <string name="btn_select_book_image">Upload Book Picture</string>
+    <string name="book_image_preview">Book image preview</string>
     <string name="btn_post_book">Post Book</string>
     <string name="error_empty_fields">Please fill all required fields</string>
     <string name="error_invalid_price">Please enter a valid price</string>
+    <string name="error_select_book_image">Please select a book image</string>
+    <string name="error_upload_book_image">Failed to upload book image</string>
     <string name="success_post">Book posted successfully!</string>
 
     <!-- Auth -->
@@ -33,6 +37,8 @@
     <string name="hint_phone">Phone</string>
     <string name="hint_country">Country</string>
     <string name="hint_city">City</string>
+    <string name="btn_select_profile_image">Upload Profile Picture</string>
+    <string name="profile_image_preview">Profile image preview</string>
     <string name="btn_sign_in">Sign In</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="go_to_sign_up">Don\'t have an account? Sign Up</string>
@@ -69,7 +75,7 @@
     <string name="hint_edit_country">Country *</string>
     <string name="hint_edit_city">City *</string>
     <string name="hint_profile_image_url">Profile Image URL</string>
-    <string name="btn_change_image">Update Image Preview</string>
+    <string name="btn_change_image">Update Image</string>
     <string name="btn_save_profile">Save Changes</string>
     <string name="success_profile_update">Profile updated successfully!</string>
 

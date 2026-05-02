@@ -1,9 +1,11 @@
 package com.colman.reread.features.sell
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.colman.reread.R
+import com.colman.reread.data.models.StorageModel
 import com.colman.reread.data.repository.UserRepository
 import com.colman.reread.model.Book
 import com.colman.reread.model.BookRepository
@@ -11,6 +13,7 @@ import com.colman.reread.model.BookRepository
 class SellViewModel : ViewModel() {
 
     private val userRepository = UserRepository.shared
+    private val storageModel = StorageModel()
 
     private val _postStatus = MutableLiveData<PostStatus>()
     val postStatus: LiveData<PostStatus> = _postStatus
@@ -28,7 +31,7 @@ class SellViewModel : ViewModel() {
         description: String,
         summary: String,
         contactPhone: String,
-        imageUrl: String
+        image: Bitmap?
     ) {
         if (title.isBlank() || author.isBlank() || priceStr.isBlank() ||
             description.isBlank() || summary.isBlank() || contactPhone.isBlank()
@@ -43,22 +46,43 @@ class SellViewModel : ViewModel() {
             return
         }
 
-        userRepository.getCurrentUser { user ->
-            val newBook = Book(
-                id = System.currentTimeMillis().toString(),
-                title = title,
-                author = author,
-                price = price,
-                description = description,
-                summary = summary,
-                imageUrl = imageUrl.ifBlank { "" },
-                contactPhone = contactPhone,
-                sellerName = user?.name ?: "",
-                sellerEmail = user?.email ?: ""
-            )
+        val bookId = System.currentTimeMillis().toString()
 
-            BookRepository.addBook(newBook)
-            _postStatus.value = PostStatus.Success
+        userRepository.getCurrentUser { user ->
+            fun saveBook(finalImageUrl: String) {
+                val newBook = Book(
+                    id = bookId,
+                    title = title,
+                    author = author,
+                    price = price,
+                    description = description,
+                    summary = summary,
+                    imageUrl = finalImageUrl,
+                    contactPhone = contactPhone,
+                    sellerName = user?.name ?: "",
+                    sellerEmail = user?.email ?: ""
+                )
+
+                BookRepository.addBook(newBook)
+                _postStatus.value = PostStatus.Success
+            }
+
+            if (image != null) {
+                storageModel.uploadImage(
+                    folderPath = "books/$bookId",
+                    image = image,
+                    completion = { uploadedImageUrl ->
+                        if (uploadedImageUrl == null) {
+                            _postStatus.value = PostStatus.Error(R.string.error_upload_book_image)
+                            return@uploadImage
+                        }
+                        saveBook(uploadedImageUrl)
+                    }
+                )
+            } else {
+                saveBook("")
+            }
+
         }
     }
 

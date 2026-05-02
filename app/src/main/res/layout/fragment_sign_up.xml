@@ -38,7 +38,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:hint="@string/hint_name"
         app:layout_constraintBottom_toTopOf="@id/et_email"
         app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:hint="@string/hint_city"
-        app:layout_constraintBottom_toTopOf="@id/btn_sign_up"
+        app:layout_constraintBottom_toTopOf="@id/iv_profile_image_preview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_country">
@@ -142,6 +142,28 @@
             android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/iv_profile_image_preview"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/profile_image_preview"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_city" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_select_profile_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/btn_select_profile_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile_image_preview" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_up"
         android:layout_width="0dp"
@@ -151,7 +173,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_go_to_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_city" />
+        app:layout_constraintTop_toBottomOf="@id/btn_select_profile_image" />
 
     <TextView
         android:id="@+id/tv_go_to_sign_in"
