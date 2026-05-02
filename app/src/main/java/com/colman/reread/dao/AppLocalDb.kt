@@ -1,12 +1,12 @@
 package com.colman.reread.dao
 
 import androidx.room.Room
-import com.colman.reread.MyApplication
+import com.colman.reread.ReRead
 
 object AppLocalDb {
     val db: AppLocalDbRepository by lazy{
 
-        val context = MyApplication.appContext
+        val context = ReRead.appContext
             ?: throw IllegalStateException("Context is null")
 
         Room.databaseBuilder(
