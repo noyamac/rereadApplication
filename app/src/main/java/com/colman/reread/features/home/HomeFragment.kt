@@ -12,8 +12,7 @@ import com.colman.reread.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentHomeBinding? = null
 
     private val viewModel: HomeViewModel by viewModels()
     private val adapter = BookAdapter(
@@ -25,9 +24,9 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,11 +38,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerView.adapter = adapter
+        binding?.recyclerView?.adapter = adapter
     }
 
     private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding?.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.filterBooks(query ?: "")
                 return true
@@ -60,10 +59,5 @@ class HomeFragment : Fragment() {
         viewModel.books.observe(viewLifecycleOwner) { books ->
             adapter.submitList(books)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

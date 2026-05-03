@@ -18,8 +18,7 @@ import com.squareup.picasso.Picasso
 
 class EditProfileFragment : Fragment() {
 
-    private var _binding: FragmentEditProfileBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentEditProfileBinding? = null
 
     private val viewModel: EditProfileViewModel by viewModels()
     private var selectedProfileImage: Bitmap? = null
@@ -35,7 +34,7 @@ class EditProfileFragment : Fragment() {
         val bitmap = loadBitmapFromUri(requireContext(), uri)
         if (bitmap != null) {
             selectedProfileImage = bitmap
-            binding.ivProfileImage.setImageBitmap(bitmap)
+            binding?.ivProfileImage?.setImageBitmap(bitmap)
         } else {
             Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
         }
@@ -44,9 +43,9 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,10 +57,10 @@ class EditProfileFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            binding.etName.setText(user.name)
-            binding.etPhone.setText(user.phone)
-            binding.etCountry.setText(user.country)
-            binding.etCity.setText(user.city)
+            binding?.etName?.setText(user.name)
+            binding?.etPhone?.setText(user.phone)
+            binding?.etCountry?.setText(user.country)
+            binding?.etCity?.setText(user.city)
             updateProfileImage(user.profileImageUrl)
         }
 
@@ -80,17 +79,17 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnSave.setOnClickListener {
+        binding?.btnSave?.setOnClickListener {
             viewModel.saveProfile(
-                name = binding.etName.text.toString(),
-                phone = binding.etPhone.text.toString(),
-                country = binding.etCountry.text.toString(),
-                city = binding.etCity.text.toString(),
+                name = binding?.etName?.text.toString(),
+                phone = binding?.etPhone?.text.toString(),
+                country = binding?.etCountry?.text.toString(),
+                city = binding?.etCity?.text.toString(),
                 profileImage = selectedProfileImage
             )
         }
 
-        binding.btnChangeImage.setOnClickListener {
+        binding?.btnChangeImage?.setOnClickListener {
             imagePickerLauncher.launch("image/*")
         }
     }
@@ -101,14 +100,9 @@ class EditProfileFragment : Fragment() {
                 .load(url)
                 .placeholder(R.drawable.ic_person)
                 .error(R.drawable.ic_person)
-                .into(binding.ivProfileImage)
+                .into(binding?.ivProfileImage)
         } else {
-            binding.ivProfileImage.setImageResource(R.drawable.ic_person)
+            binding?.ivProfileImage?.setImageResource(R.drawable.ic_person)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

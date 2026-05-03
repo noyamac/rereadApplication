@@ -17,8 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class SellFragment : Fragment() {
 
-    private var _binding: FragmentSellBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentSellBinding? = null
     private var selectedBookImage: Bitmap? = null
 
     private val viewModel: SellViewModel by viewModels()
@@ -34,20 +33,20 @@ class SellFragment : Fragment() {
         val bitmap = loadBitmapFromUri(requireContext(), uri)
         if (bitmap != null) {
             selectedBookImage = bitmap
-            binding.ivBookImagePreview.setImageBitmap(bitmap)
+            binding?.ivBookImagePreview?.setImageBitmap(bitmap)
         } else {
             selectedBookImage = null
-            binding.ivBookImagePreview.setImageResource(R.drawable.default_book_cover)
-            Snackbar.make(binding.root, "Failed to load image", Snackbar.LENGTH_SHORT).show()
+            binding?.ivBookImagePreview?.setImageResource(R.drawable.default_book_cover)
+            binding?.root?.let { Snackbar.make(it, "Failed to load image", Snackbar.LENGTH_SHORT).show() }
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSellBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentSellBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,18 +57,18 @@ class SellFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnSelectBookImage.setOnClickListener {
+        binding?.btnSelectBookImage?.setOnClickListener {
             imagePickerLauncher.launch("image/*")
         }
 
-        binding.btnSubmit.setOnClickListener {
+        binding?.btnSubmit?.setOnClickListener {
             viewModel.postBook(
-                title = binding.etTitle.text.toString(),
-                author = binding.etAuthor.text.toString(),
-                priceStr = binding.etPrice.text.toString(),
-                description = binding.etDescription.text.toString(),
-                summary = binding.etSummary.text.toString(),
-                contactPhone = binding.etContactPhone.text.toString(),
+                title = binding?.etTitle?.text.toString(),
+                author = binding?.etAuthor?.text.toString(),
+                priceStr = binding?.etPrice?.text.toString(),
+                description = binding?.etDescription?.text.toString(),
+                summary = binding?.etSummary?.text.toString(),
+                contactPhone = binding?.etContactPhone?.text.toString(),
                 image = selectedBookImage
             )
         }
@@ -94,18 +93,13 @@ class SellFragment : Fragment() {
     }
 
     private fun clearFields() {
-        binding.etTitle.text?.clear()
-        binding.etAuthor.text?.clear()
-        binding.etPrice.text?.clear()
-        binding.etDescription.text?.clear()
-        binding.etSummary.text?.clear()
-        binding.etContactPhone.text?.clear()
+        binding?.etTitle?.text?.clear()
+        binding?.etAuthor?.text?.clear()
+        binding?.etPrice?.text?.clear()
+        binding?.etDescription?.text?.clear()
+        binding?.etSummary?.text?.clear()
+        binding?.etContactPhone?.text?.clear()
         selectedBookImage = null
-        binding.ivBookImagePreview.setImageResource(R.drawable.default_book_cover)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        binding?.ivBookImagePreview?.setImageResource(R.drawable.default_book_cover)
     }
 }

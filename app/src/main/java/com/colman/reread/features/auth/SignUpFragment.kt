@@ -23,8 +23,7 @@ import com.colman.reread.model.User
 
 class SignUpFragment : Fragment() {
 
-    private var _binding: FragmentSignUpBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentSignUpBinding? = null
 
     private val viewModel: AuthViewModel by viewModels()
     private var selectedProfileImage: Bitmap? = null
@@ -40,10 +39,10 @@ class SignUpFragment : Fragment() {
         val bitmap = loadBitmapFromUri(requireContext(), uri)
         if (bitmap != null) {
             selectedProfileImage = bitmap
-            binding.ivProfileImagePreview.setImageBitmap(bitmap)
+            binding?.ivProfileImagePreview?.setImageBitmap(bitmap)
         } else {
             selectedProfileImage = null
-            binding.ivProfileImagePreview.setImageResource(R.drawable.ic_person)
+            binding?.ivProfileImagePreview?.setImageResource(R.drawable.ic_person)
             Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
         }
     }
@@ -72,9 +71,9 @@ class SignUpFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,14 +86,14 @@ class SignUpFragment : Fragment() {
     }
 
     private fun setupImagePicker() {
-        binding.btnSelectProfileImage.setOnClickListener {
+        binding?.btnSelectProfileImage?.setOnClickListener {
             imagePickerLauncher.launch("image/*")
         }
     }
 
     private fun setupDropdowns() {
-        val countryInput = binding.etCountry.editText as? AutoCompleteTextView
-        val cityInput = binding.etCity.editText as? AutoCompleteTextView
+        val countryInput = binding?.etCountry?.editText as? AutoCompleteTextView
+        val cityInput = binding?.etCity?.editText as? AutoCompleteTextView
         var activeCountryForCity: String? = null
 
         val countries = countryToCities.keys.toList()
@@ -109,22 +108,22 @@ class SignUpFragment : Fragment() {
         }
 
         cityInput?.setOnClickListener {
-            if (binding.etCity.isEnabled) cityInput.showDropDown()
+            if (binding?.etCity?.isEnabled == true) cityInput.showDropDown()
         }
         cityInput?.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && binding.etCity.isEnabled) cityInput.showDropDown()
+            if (hasFocus && binding?.etCity?.isEnabled == true) cityInput.showDropDown()
         }
 
-        binding.etCity.isEnabled = false
+        binding?.etCity?.isEnabled = false
         cityInput?.setText("", false)
 
         fun updateCityDropdown(selectedCountry: String) {
             val cities = countryToCities[selectedCountry].orEmpty()
             val cityAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
 
-            binding.etCountry.error = null
-            binding.etCity.error = null
-            binding.etCity.isEnabled = cities.isNotEmpty()
+            binding?.etCountry?.error = null
+            binding?.etCity?.error = null
+            binding?.etCity?.isEnabled = cities.isNotEmpty()
             cityInput?.setText("", false)
             cityInput?.setAdapter(cityAdapter)
             activeCountryForCity = selectedCountry
@@ -145,8 +144,8 @@ class SignUpFragment : Fragment() {
                         updateCityDropdown(selectedCountry)
                     }
                 } else {
-                    binding.etCity.isEnabled = false
-                    binding.etCity.error = null
+                    binding?.etCity?.isEnabled = false
+                    binding?.etCity?.error = null
                     cityInput?.setText("", false)
                     cityInput?.setAdapter(null)
                     activeCountryForCity = null
@@ -156,14 +155,14 @@ class SignUpFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnSignUp.setOnClickListener {
+        binding?.btnSignUp?.setOnClickListener {
             if (validateInputs()) {
-                val name = binding.etName.editText?.text?.toString().orEmpty().trim()
-                val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
-                val password = binding.etPassword.editText?.text?.toString().orEmpty()
-                val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
-                val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
-                val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
+                val name = binding?.etName?.editText?.text?.toString().orEmpty().trim()
+                val email = binding?.etEmail?.editText?.text?.toString().orEmpty().trim()
+                val password = binding?.etPassword?.editText?.text?.toString().orEmpty()
+                val phone = binding?.etPhone?.editText?.text?.toString().orEmpty().trim()
+                val country = binding?.etCountry?.editText?.text?.toString().orEmpty().trim()
+                val city = binding?.etCity?.editText?.text?.toString().orEmpty().trim()
 
                 val user = User(
                     name = name,
@@ -176,7 +175,7 @@ class SignUpFragment : Fragment() {
             }
         }
 
-        binding.tvGoToSignIn.setOnClickListener {
+        binding?.tvGoToSignIn?.setOnClickListener {
             findNavController().popBackStack()
         }
     }
@@ -185,19 +184,19 @@ class SignUpFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AuthViewModel.AuthState.Loading -> {
-                    binding.btnSignUp.isEnabled = false
+                    binding?.btnSignUp?.isEnabled = false
                 }
                 is AuthViewModel.AuthState.Success -> {
-                    binding.btnSignUp.isEnabled = true
+                    binding?.btnSignUp?.isEnabled = true
                     findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
                     viewModel.resetState()
                 }
                 is AuthViewModel.AuthState.Error -> {
-                    binding.btnSignUp.isEnabled = true
+                    binding?.btnSignUp?.isEnabled = true
                     Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    binding.btnSignUp.isEnabled = true
+                    binding?.btnSignUp?.isEnabled = true
                 }
             }
         }
@@ -205,59 +204,59 @@ class SignUpFragment : Fragment() {
 
     private fun validateInputs(): Boolean {
         var valid = true
-        val name = binding.etName.editText?.text?.toString().orEmpty().trim()
-        val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
-        val password = binding.etPassword.editText?.text?.toString().orEmpty()
-        val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
-        val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
-        val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
+        val name = binding?.etName?.editText?.text?.toString().orEmpty().trim()
+        val email = binding?.etEmail?.editText?.text?.toString().orEmpty().trim()
+        val password = binding?.etPassword?.editText?.text?.toString().orEmpty()
+        val phone = binding?.etPhone?.editText?.text?.toString().orEmpty().trim()
+        val country = binding?.etCountry?.editText?.text?.toString().orEmpty().trim()
+        val city = binding?.etCity?.editText?.text?.toString().orEmpty().trim()
 
         if (name.isEmpty()) {
-            binding.etName.error = "Name is required"
+            binding?.etName?.error = "Name is required"
             valid = false
         } else {
-            binding.etName.error = null
+            binding?.etName?.error = null
         }
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Enter a valid email address"
+            binding?.etEmail?.error = "Enter a valid email address"
             valid = false
         } else {
-            binding.etEmail.error = null
+            binding?.etEmail?.error = null
         }
 
         if (password.length < 6) {
-            binding.etPassword.error = "Password must be at least 6 characters"
+            binding?.etPassword?.error = "Password must be at least 6 characters"
             valid = false
         } else {
-            binding.etPassword.error = null
+            binding?.etPassword?.error = null
         }
 
         if (phone.isEmpty()) {
-            binding.etPhone.error = "Phone is required"
+            binding?.etPhone?.error = "Phone is required"
             valid = false
         } else {
-            binding.etPhone.error = null
+            binding?.etPhone?.error = null
         }
 
         if (country.isEmpty()) {
-            binding.etCountry.error = "Please select a country"
+            binding?.etCountry?.error = "Please select a country"
             valid = false
         } else if (!countryToCities.containsKey(country)) {
-            binding.etCountry.error = "Please select a country from the list"
+            binding?.etCountry?.error = "Please select a country from the list"
             valid = false
         } else {
-            binding.etCountry.error = null
+            binding?.etCountry?.error = null
         }
 
         if (city.isEmpty()) {
-            binding.etCity.error = "Please select a city"
+            binding?.etCity?.error = "Please select a city"
             valid = false
         } else if (!countryToCities[country].orEmpty().contains(city)) {
-            binding.etCity.error = "Please select a city from the list"
+            binding?.etCity?.error = "Please select a city from the list"
             valid = false
         } else {
-            binding.etCity.error = null
+            binding?.etCity?.error = null
         }
 
         return valid
@@ -265,6 +264,6 @@ class SignUpFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

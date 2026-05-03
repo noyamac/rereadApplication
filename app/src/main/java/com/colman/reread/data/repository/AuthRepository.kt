@@ -103,4 +103,8 @@ class AuthRepository private constructor() {
             }
         )
     }
+
+    fun isUserLoggedIn(): Boolean {
+        return firebaseAuth.getUserId() != null
+    }
 }

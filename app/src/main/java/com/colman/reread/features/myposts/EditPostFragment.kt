@@ -19,8 +19,7 @@ import com.squareup.picasso.Picasso
 
 class EditPostFragment : Fragment() {
 
-    private var _binding: FragmentEditPostBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentEditPostBinding? = null
 
     private val viewModel: EditPostViewModel by viewModels()
     private val args: EditPostFragmentArgs by navArgs()
@@ -37,10 +36,10 @@ class EditPostFragment : Fragment() {
         val bitmap = loadBitmapFromUri(requireContext(), uri)
         if (bitmap != null) {
             selectedBookImage = bitmap
-            binding.ivBookCover.setImageBitmap(bitmap)
+            binding?.ivBookCover?.setImageBitmap(bitmap)
         } else {
             selectedBookImage = null
-            binding.ivBookCover.setImageResource(R.drawable.default_book_cover)
+            binding?.ivBookCover?.setImageResource(R.drawable.default_book_cover)
             Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
         }
     }
@@ -48,9 +47,9 @@ class EditPostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEditPostBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentEditPostBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,26 +62,26 @@ class EditPostFragment : Fragment() {
 
     private fun setupUI() {
         val book = args.book
-        binding.etTitle.setText(book.title)
-        binding.etAuthor.setText(book.author)
-        binding.etPrice.setText(book.price.toString())
-        binding.etDescription.setText(book.description)
-        binding.etSummary.setText(book.summary)
-        binding.etContactPhone.setText(book.contactPhone)
+        binding?.etTitle?.setText(book.title)
+        binding?.etAuthor?.setText(book.author)
+        binding?.etPrice?.setText(book.price.toString())
+        binding?.etDescription?.setText(book.description)
+        binding?.etSummary?.setText(book.summary)
+        binding?.etContactPhone?.setText(book.contactPhone)
 
         updateImagePreview(book.imageUrl)
     }
 
     private fun setupListeners() {
-        binding.btnUpdate.setOnClickListener {
+        binding?.btnUpdate?.setOnClickListener {
             viewModel.updateBook(
                 id = args.book.id,
-                title = binding.etTitle.text.toString(),
-                author = binding.etAuthor.text.toString(),
-                priceStr = binding.etPrice.text.toString(),
-                description = binding.etDescription.text.toString(),
-                summary = binding.etSummary.text.toString(),
-                contactPhone = binding.etContactPhone.text.toString(),
+                title = binding?.etTitle?.text.toString(),
+                author = binding?.etAuthor?.text.toString(),
+                priceStr = binding?.etPrice?.text.toString(),
+                description = binding?.etDescription?.text.toString(),
+                summary = binding?.etSummary?.text.toString(),
+                contactPhone = binding?.etContactPhone?.text.toString(),
                 imageUrl = args.book.imageUrl,
                 image = selectedBookImage,
                 sellerName = args.book.sellerName,
@@ -90,7 +89,7 @@ class EditPostFragment : Fragment() {
             )
         }
 
-        binding.btnUpdatePreview.setOnClickListener {
+        binding?.btnUpdatePreview?.setOnClickListener {
             imagePickerLauncher.launch("image/*")
         }
     }
@@ -102,9 +101,9 @@ class EditPostFragment : Fragment() {
                 .load(url)
                 .placeholder(placeholder)
                 .error(placeholder)
-                .into(binding.ivBookCover)
+                .into(binding?.ivBookCover)
         } else {
-            binding.ivBookCover.setImageResource(placeholder)
+            binding?.ivBookCover?.setImageResource(placeholder)
         }
     }
 
@@ -121,10 +120,5 @@ class EditPostFragment : Fragment() {
                 is EditPostViewModel.UpdateStatus.Idle -> Unit
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
