@@ -16,17 +16,16 @@ import com.squareup.picasso.Picasso
 
 class BookDetailsFragment : Fragment() {
 
-    private var _binding: FragmentBookDetailsBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentBookDetailsBinding? = null
 
     private val args: BookDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentBookDetailsBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentBookDetailsBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,19 +33,19 @@ class BookDetailsFragment : Fragment() {
         val book = args.book
         setupUI(book)
 
-        binding.btnBack.setOnClickListener {
+        binding?.btnBack?.setOnClickListener {
             findNavController().navigateUp()
         }
     }
 
     private fun setupUI(book: Book) {
-        binding.tvTitle.text = book.title
-        binding.tvAuthor.text = getString(R.string.author_format, book.author)
-        binding.tvPrice.text = getString(R.string.price_format, book.price)
-        binding.tvDescription.text = book.description
-        binding.tvSummary.text = book.summary
-        binding.tvSellerName.text = book.sellerName
-        binding.tvSellerEmail.text = book.sellerEmail
+        binding?.tvTitle?.text = book.title
+        binding?.tvAuthor?.text = getString(R.string.author_format, book.author)
+        binding?.tvPrice?.text = getString(R.string.price_format, book.price)
+        binding?.tvDescription?.text = book.description
+        binding?.tvSummary?.text = book.summary
+        binding?.tvSellerName?.text = book.sellerName
+        binding?.tvSellerEmail?.text = book.sellerEmail
 
         val placeholder = R.drawable.default_book_cover
         if (book.imageUrl.isNotEmpty()) {
@@ -54,21 +53,16 @@ class BookDetailsFragment : Fragment() {
                 .load(book.imageUrl)
                 .placeholder(placeholder)
                 .error(placeholder)
-                .into(binding.ivBookCover)
+                .into(binding?.ivBookCover)
         } else {
-            binding.ivBookCover.setImageResource(placeholder)
+            binding?.ivBookCover?.setImageResource(placeholder)
         }
 
-        binding.btnContact.setOnClickListener {
+        binding?.btnContact?.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL).apply {
                 data = Uri.parse("tel:${book.contactPhone}")
             }
             startActivity(intent)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
