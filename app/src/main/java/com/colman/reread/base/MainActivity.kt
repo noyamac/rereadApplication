@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.colman.reread.R
+import com.colman.reread.data.repository.AuthRepository
 import com.colman.reread.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,17 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate(R.navigation.nav_graph)
+
+        if (AuthRepository.shared.isUserLoggedIn()) {
+            graph.setStartDestination(R.id.homeFragment)
+        } else {
+            graph.setStartDestination(R.id.signInFragment)
+        }
+
+        navController.graph = graph
         
         binding.bottomNavigation.setupWithNavController(navController)
 
