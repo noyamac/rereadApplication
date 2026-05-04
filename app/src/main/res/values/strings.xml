@@ -45,6 +45,10 @@
     <string name="go_to_sign_in">Already have an account? Sign In</string>
 
 
+    <!-- Empty states -->
+    <string name="empty_home">No books available yet</string>
+    <string name="empty_my_posts">You haven\u2019t listed any books yet</string>
+
     <!-- Edit Post Page -->
     <string name="edit_post_title">Edit Post</string>
     <string name="btn_update_post">Update Post</string>
