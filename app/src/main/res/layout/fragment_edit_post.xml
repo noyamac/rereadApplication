@@ -142,22 +142,6 @@
                 android:minLines="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_contact_phone"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/hint_contact_phone"
-            app:layout_constraintTop_toBottomOf="@id/til_summary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_contact_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone" />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_update"
             android:layout_width="match_parent"
@@ -167,7 +151,7 @@
             android:text="@string/btn_update_post"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_contact_phone" />
+            app:layout_constraintTop_toBottomOf="@id/til_summary" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading_spinner"

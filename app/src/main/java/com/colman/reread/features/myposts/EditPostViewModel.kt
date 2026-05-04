@@ -29,14 +29,14 @@ class EditPostViewModel : ViewModel() {
         priceStr: String,
         description: String,
         summary: String,
-        contactPhone: String,
         imageUrl: String,
         image: Bitmap?,
         sellerName: String,
-        sellerEmail: String
+        sellerEmail: String,
+        contactPhone: String
     ) {
         if (title.isBlank() || author.isBlank() || priceStr.isBlank() ||
-            description.isBlank() || summary.isBlank() || contactPhone.isBlank()
+            description.isBlank() || summary.isBlank()
         ) {
             _updateStatus.value = UpdateStatus.Error(R.string.error_empty_fields)
             return
