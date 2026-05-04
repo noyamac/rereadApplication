@@ -3,8 +3,6 @@ package com.colman.reread.features.auth
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +13,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
 import com.colman.reread.R
 import com.colman.reread.base.loadBitmapFromUri
+import com.colman.reread.data.repository.RemoteCountryRepository
 import com.colman.reread.databinding.FragmentSignUpBinding
+import com.colman.reread.model.Country
 import com.colman.reread.model.User
 
 class SignUpFragment : Fragment() {
@@ -48,26 +50,6 @@ class SignUpFragment : Fragment() {
         }
     }
 
-    private val countryToCities = mapOf(
-        "Israel" to listOf(
-            "Tel Aviv", "Jerusalem", "Haifa", "Rishon LeZion", "Petah Tikva", "Ashdod",
-            "Netanya", "Beer Sheva", "Holon", "Bnei Brak", "Ramat Gan", "Rehovot",
-            "Bat Yam", "Ashkelon", "Herzliya", "Kfar Saba", "Hadera", "Modiin",
-            "Nazareth", "Eilat"
-        ),
-        "United States" to listOf(
-            "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia",
-            "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Jacksonville",
-            "Fort Worth", "Columbus", "Charlotte", "Indianapolis", "San Francisco", "Seattle",
-            "Denver", "Boston"
-        ),
-        "United Kingdom" to listOf(
-            "London", "Manchester", "Birmingham", "Leeds", "Glasgow", "Liverpool",
-            "Bristol", "Sheffield", "Edinburgh", "Leicester", "Coventry", "Bradford",
-            "Cardiff", "Belfast", "Nottingham", "Hull", "Newcastle", "Stoke-on-Trent",
-            "Southampton", "Derby"
-        )
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,65 +76,19 @@ class SignUpFragment : Fragment() {
 
     private fun setupDropdowns() {
         val countryInput = binding.etCountry.editText as? AutoCompleteTextView
-        val cityInput = binding.etCity.editText as? AutoCompleteTextView
-        var activeCountryForCity: String? = null
 
-        val countries = countryToCities.keys.toList()
-        val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countries)
-        countryInput?.setAdapter(countryAdapter)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val countries: List<Country> = RemoteCountryRepository.shared.getCountries()
+            val countryNames = countries.mapNotNull { it.name }.sorted()
+            val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countryNames)
+            countryInput?.setAdapter(countryAdapter)
+        }
         countryInput?.threshold = 1
-        cityInput?.threshold = 1
 
         countryInput?.setOnClickListener { countryInput.showDropDown() }
         countryInput?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) countryInput.showDropDown()
         }
-
-        cityInput?.setOnClickListener {
-            if (binding.etCity.isEnabled) cityInput.showDropDown()
-        }
-        cityInput?.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && binding.etCity.isEnabled) cityInput.showDropDown()
-        }
-
-        binding.etCity.isEnabled = false
-        cityInput?.setText("", false)
-
-        fun updateCityDropdown(selectedCountry: String) {
-            val cities = countryToCities[selectedCountry].orEmpty()
-            val cityAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cities)
-
-            binding.etCountry.error = null
-            binding.etCity.error = null
-            binding.etCity.isEnabled = cities.isNotEmpty()
-            cityInput?.setText("", false)
-            cityInput?.setAdapter(cityAdapter)
-            activeCountryForCity = selectedCountry
-        }
-
-        countryInput?.setOnItemClickListener { _, _, position, _ ->
-            val selectedCountry = countries[position]
-            updateCityDropdown(selectedCountry)
-        }
-
-        countryInput?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                val selectedCountry = s?.toString().orEmpty().trim()
-                if (countryToCities.containsKey(selectedCountry)) {
-                    if (activeCountryForCity != selectedCountry) {
-                        updateCityDropdown(selectedCountry)
-                    }
-                } else {
-                    binding.etCity.isEnabled = false
-                    binding.etCity.error = null
-                    cityInput?.setText("", false)
-                    cityInput?.setAdapter(null)
-                    activeCountryForCity = null
-                }
-            }
-        })
     }
 
     private fun setupListeners() {
@@ -163,14 +99,12 @@ class SignUpFragment : Fragment() {
                 val password = binding.etPassword.editText?.text?.toString().orEmpty()
                 val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
                 val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
-                val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
 
                 val user = User(
                     name = name,
                     email = email,
                     phone = phone,
-                    country = country,
-                    city = city
+                    country = country
                 )
                 viewModel.signup(user, password, selectedProfileImage)
             }
@@ -210,7 +144,6 @@ class SignUpFragment : Fragment() {
         val password = binding.etPassword.editText?.text?.toString().orEmpty()
         val phone = binding.etPhone.editText?.text?.toString().orEmpty().trim()
         val country = binding.etCountry.editText?.text?.toString().orEmpty().trim()
-        val city = binding.etCity.editText?.text?.toString().orEmpty().trim()
 
         if (name.isEmpty()) {
             binding.etName.error = "Name is required"
@@ -243,21 +176,8 @@ class SignUpFragment : Fragment() {
         if (country.isEmpty()) {
             binding.etCountry.error = "Please select a country"
             valid = false
-        } else if (!countryToCities.containsKey(country)) {
-            binding.etCountry.error = "Please select a country from the list"
-            valid = false
         } else {
             binding.etCountry.error = null
-        }
-
-        if (city.isEmpty()) {
-            binding.etCity.error = "Please select a city"
-            valid = false
-        } else if (!countryToCities[country].orEmpty().contains(city)) {
-            binding.etCity.error = "Please select a city from the list"
-            valid = false
-        } else {
-            binding.etCity.error = null
         }
 
         return valid

@@ -78,31 +78,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_country"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="@string/hint_edit_country"
             app:layout_constraintTop_toBottomOf="@id/til_phone">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_country"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_city"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/hint_edit_city"
-            app:layout_constraintTop_toBottomOf="@id/til_country">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_city"
+            <AutoCompleteTextView
+                android:id="@+id/actv_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -116,7 +100,7 @@
             android:layout_marginBottom="24dp"
             android:text="@string/btn_save_profile"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_city" />
+            app:layout_constraintTop_toBottomOf="@id/til_country" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
