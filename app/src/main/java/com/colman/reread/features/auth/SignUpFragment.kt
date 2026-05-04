@@ -119,18 +119,22 @@ class SignUpFragment : Fragment() {
             when (state) {
                 is AuthViewModel.AuthState.Loading -> {
                     binding?.btnSignUp?.isEnabled = false
+                    binding?.loadingSpinner?.visibility = View.VISIBLE
                 }
                 is AuthViewModel.AuthState.Success -> {
                     binding?.btnSignUp?.isEnabled = true
+                    binding?.loadingSpinner?.visibility = View.GONE
                     findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
                     viewModel.resetState()
                 }
                 is AuthViewModel.AuthState.Error -> {
                     binding?.btnSignUp?.isEnabled = true
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     binding?.btnSignUp?.isEnabled = true
+                    binding?.loadingSpinner?.visibility = View.GONE
                 }
             }
         }

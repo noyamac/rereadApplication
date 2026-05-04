@@ -51,6 +51,7 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        binding.loadingSpinner.visibility = View.VISIBLE
         viewModel.loadCurrentUser()
     }
 
@@ -63,6 +64,7 @@ class ProfileFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.userData.observe(viewLifecycleOwner) { user ->
+            binding.loadingSpinner.visibility = View.GONE
             if (user == null) return@observe
 
             binding.tvName.text = user.name

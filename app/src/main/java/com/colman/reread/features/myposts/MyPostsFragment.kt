@@ -14,9 +14,7 @@ import com.colman.reread.features.home.BookAdapter
 
 class MyPostsFragment : Fragment() {
 
-    private var _binding: FragmentMyPostsBinding? = null
-    private val binding get() = _binding!!
-
+    private var binding: FragmentMyPostsBinding? = null
     private val viewModel: MyPostsViewModel by viewModels()
     
     private val adapter = BookAdapter(
@@ -29,6 +27,7 @@ class MyPostsFragment : Fragment() {
             findNavController().navigate(action)
         },
         onDeleteClick = { book ->
+            binding?.loadingSpinner?.visibility = View.VISIBLE
             viewModel.deleteBook(book)
         }
     )
@@ -36,15 +35,15 @@ class MyPostsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMyPostsBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentMyPostsBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        binding.recyclerView.adapter = adapter
+        binding?.recyclerView?.adapter = adapter
         observeViewModel()
     }
 
@@ -56,14 +55,17 @@ class MyPostsFragment : Fragment() {
         viewModel.deleteStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 is MyPostsViewModel.DeleteStatus.Success -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(R.string.toast_delete_clicked, status.bookTitle), Toast.LENGTH_SHORT).show()
                     viewModel.resetDeleteStatus()
                 }
                 is MyPostsViewModel.DeleteStatus.Error -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(status.messageResId), Toast.LENGTH_SHORT).show()
                     viewModel.resetDeleteStatus()
                 }
                 MyPostsViewModel.DeleteStatus.Idle -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                 }
             }
         }
@@ -71,6 +73,6 @@ class MyPostsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

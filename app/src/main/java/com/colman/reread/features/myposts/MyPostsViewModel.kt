@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.colman.reread.R
-import com.colman.reread.model.Book
 import com.colman.reread.data.repository.BookRepository
+import com.colman.reread.data.repository.UserRepository
+import com.colman.reread.model.Book
 import com.google.firebase.auth.FirebaseAuth
 
 class MyPostsViewModel : ViewModel() {
@@ -22,7 +23,12 @@ class MyPostsViewModel : ViewModel() {
 
     val books: LiveData<List<Book>> = BookRepository.shared.books.map { allBooks ->
         val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
-        allBooks.filter { it.sellerEmail == currentUserEmail }
+            ?: UserRepository.shared.currentUser?.email
+        val normalizedEmail = currentUserEmail?.trim()?.lowercase()
+
+        allBooks.filter { book ->
+            book.sellerEmail.trim().lowercase() == normalizedEmail
+        }
     }
 
     fun deleteBook(book: Book) {

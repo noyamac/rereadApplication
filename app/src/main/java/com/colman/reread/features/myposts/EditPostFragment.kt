@@ -73,7 +73,12 @@ class EditPostFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding?.btnBack?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding?.btnUpdate?.setOnClickListener {
+            binding?.loadingSpinner?.visibility = View.VISIBLE
             viewModel.updateBook(
                 id = args.book.id,
                 title = binding?.etTitle?.text.toString(),
@@ -111,13 +116,17 @@ class EditPostFragment : Fragment() {
         viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 is EditPostViewModel.UpdateStatus.Success -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(R.string.success_update), Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
                 is EditPostViewModel.UpdateStatus.Error -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(status.messageResId), Toast.LENGTH_SHORT).show()
                 }
-                is EditPostViewModel.UpdateStatus.Idle -> Unit
+                is EditPostViewModel.UpdateStatus.Idle -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
+                }
             }
         }
     }

@@ -62,6 +62,7 @@ class SellFragment : Fragment() {
         }
 
         binding?.btnSubmit?.setOnClickListener {
+            binding?.loadingSpinner?.visibility = View.VISIBLE
             viewModel.postBook(
                 title = binding?.etTitle?.text.toString(),
                 author = binding?.etAuthor?.text.toString(),
@@ -78,15 +79,17 @@ class SellFragment : Fragment() {
         viewModel.postStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 is SellViewModel.PostStatus.Success -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(R.string.success_post), Toast.LENGTH_LONG).show()
                     clearFields()
                     viewModel.resetStatus()
                 }
                 is SellViewModel.PostStatus.Error -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(status.messageResId), Toast.LENGTH_SHORT).show()
                 }
                 is SellViewModel.PostStatus.Idle -> {
-                    // TODO: implement create in server
+                    binding?.loadingSpinner?.visibility = View.GONE
                 }
             }
         }
