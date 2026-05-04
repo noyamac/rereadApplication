@@ -38,7 +38,7 @@ class EditProfileViewModel : ViewModel() {
         }
     }
 
-    fun saveProfile(name: String, phone: String, country: String, city: String, profileImage: Bitmap?) {
+    fun saveProfile(name: String, phone: String, country: String, profileImage: Bitmap?) {
         val current = _user.value ?: return
 
         if (profileImage != null) {
@@ -54,13 +54,13 @@ class EditProfileViewModel : ViewModel() {
                     }
                     val updated = current.copy(
                         name = name, phone = phone, country = country,
-                        city = city, profileImageUrl = imageUrl
+                        profileImageUrl = imageUrl
                     )
                     saveUser(updated)
                 }
             )
         } else {
-            val updated = current.copy(name = name, phone = phone, country = country, city = city)
+            val updated = current.copy(name = name, phone = phone, country = country)
             saveUser(updated)
         }
     }

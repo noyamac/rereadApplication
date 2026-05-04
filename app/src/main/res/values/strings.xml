@@ -37,7 +37,6 @@
     <string name="hint_name">Full Name</string>
     <string name="hint_phone">Phone</string>
     <string name="hint_country">Country</string>
-    <string name="hint_city">City</string>
     <string name="btn_select_profile_image">Upload Profile Picture</string>
     <string name="profile_image_preview">Profile image preview</string>
     <string name="btn_sign_in">Sign In</string>
@@ -65,7 +64,6 @@
     <string name="profile_label_email">Email</string>
     <string name="profile_label_phone">Phone</string>
     <string name="profile_label_country">Country</string>
-    <string name="profile_label_city">City</string>
     <string name="profile_edit_button">Edit Profile</string>
     <string name="profile_logout_button">Logout</string>
 
@@ -74,7 +72,6 @@
     <string name="hint_edit_name">Full Name *</string>
     <string name="hint_edit_phone">Phone Number *</string>
     <string name="hint_edit_country">Country *</string>
-    <string name="hint_edit_city">City *</string>
     <string name="hint_profile_image_url">Profile Image URL</string>
     <string name="btn_change_image">Update Image</string>
     <string name="btn_save_profile">Save Changes</string>

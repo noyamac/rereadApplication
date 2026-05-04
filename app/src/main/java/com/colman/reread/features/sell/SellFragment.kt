@@ -102,4 +102,9 @@ class SellFragment : Fragment() {
         selectedBookImage = null
         binding?.ivBookImagePreview?.setImageResource(R.drawable.default_book_cover)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }
