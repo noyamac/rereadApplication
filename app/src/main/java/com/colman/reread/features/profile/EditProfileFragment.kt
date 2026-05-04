@@ -66,10 +66,14 @@ class EditProfileFragment : Fragment() {
             try {
                 val countries: List<Country> = RemoteCountryRepository.shared.getCountries()
                 val countryNames = countries.mapNotNull { it.name }.sorted()
-                val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countryNames)
-                binding?.actvCountry?.setAdapter(countryAdapter)
+                context?.let { safeContext ->
+                    val countryAdapter = ArrayAdapter(safeContext, android.R.layout.simple_dropdown_item_1line, countryNames)
+                    binding?.actvCountry?.setAdapter(countryAdapter)
+                }
             } catch (e: Exception) {
-                Toast.makeText(context, "Failed to load countries", Toast.LENGTH_SHORT).show()
+                if (isAdded) {
+                    Toast.makeText(context, "Failed to load countries", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -91,19 +95,28 @@ class EditProfileFragment : Fragment() {
         viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 is EditProfileViewModel.UpdateStatus.Success -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, getString(R.string.success_profile_update), Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
                 is EditProfileViewModel.UpdateStatus.Error -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, status.message, Toast.LENGTH_SHORT).show()
                 }
-                is EditProfileViewModel.UpdateStatus.Idle -> Unit
+                is EditProfileViewModel.UpdateStatus.Idle -> {
+                    binding?.loadingSpinner?.visibility = View.GONE
+                }
             }
         }
     }
 
     private fun setupListeners() {
+        binding?.btnBack?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding?.btnSave?.setOnClickListener {
+            binding?.loadingSpinner?.visibility = View.VISIBLE
             viewModel.saveProfile(
                 name = binding?.etName?.text.toString(),
                 phone = binding?.etPhone?.text.toString(),

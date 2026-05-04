@@ -50,6 +50,10 @@ class SellViewModel : ViewModel() {
 
         userRepository.getCurrentUser { user ->
             fun saveBook(finalImageUrl: String) {
+                val sellerEmail = user?.email?.takeIf { it.isNotBlank() }
+                    ?: UserRepository.shared.currentUser?.email
+                    ?: ""
+
                 val newBook = Book(
                     id = bookId,
                     title = title,
@@ -60,7 +64,7 @@ class SellViewModel : ViewModel() {
                     imageUrl = finalImageUrl,
                     contactPhone = contactPhone,
                     sellerName = user?.name ?: "",
-                    sellerEmail = user?.email ?: ""
+                    sellerEmail = sellerEmail
                 )
 
                 BookRepository.shared.addBook(newBook) { success ->

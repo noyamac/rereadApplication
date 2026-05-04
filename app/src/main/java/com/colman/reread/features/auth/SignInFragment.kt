@@ -47,18 +47,22 @@ class SignInFragment : Fragment() {
             when (state) {
                 is AuthViewModel.AuthState.Loading -> {
                     binding?.btnSignIn?.isEnabled = false
+                    binding?.loadingSpinner?.visibility = View.VISIBLE
                 }
                 is AuthViewModel.AuthState.Success -> {
                     binding?.btnSignIn?.isEnabled = true
+                    binding?.loadingSpinner?.visibility = View.GONE
                     findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
                     viewModel.resetState()
                 }
                 is AuthViewModel.AuthState.Error -> {
                     binding?.btnSignIn?.isEnabled = true
+                    binding?.loadingSpinner?.visibility = View.GONE
                     Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     binding?.btnSignIn?.isEnabled = true
+                    binding?.loadingSpinner?.visibility = View.GONE
                 }
             }
         }
