@@ -13,16 +13,15 @@ import com.colman.reread.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {
 
-    private var _binding: FragmentSignInBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentSignInBinding? = null
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSignInBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentSignInBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,15 +29,15 @@ class SignInFragment : Fragment() {
 
         observeViewModel()
 
-        binding.btnSignIn.setOnClickListener {
+        binding?.btnSignIn?.setOnClickListener {
             if (validateInputs()) {
-                val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
-                val password = binding.etPassword.editText?.text?.toString().orEmpty()
+                val email = binding?.etEmail?.editText?.text?.toString().orEmpty().trim()
+                val password = binding?.etPassword?.editText?.text?.toString().orEmpty()
                 viewModel.login(email, password)
             }
         }
 
-        binding.tvGoToSignUp.setOnClickListener {
+        binding?.tvGoToSignUp?.setOnClickListener {
             findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
         }
     }
@@ -47,19 +46,19 @@ class SignInFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AuthViewModel.AuthState.Loading -> {
-                    binding.btnSignIn.isEnabled = false
+                    binding?.btnSignIn?.isEnabled = false
                 }
                 is AuthViewModel.AuthState.Success -> {
-                    binding.btnSignIn.isEnabled = true
+                    binding?.btnSignIn?.isEnabled = true
                     findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
                     viewModel.resetState()
                 }
                 is AuthViewModel.AuthState.Error -> {
-                    binding.btnSignIn.isEnabled = true
+                    binding?.btnSignIn?.isEnabled = true
                     Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    binding.btnSignIn.isEnabled = true
+                    binding?.btnSignIn?.isEnabled = true
                 }
             }
         }
@@ -67,21 +66,21 @@ class SignInFragment : Fragment() {
 
     private fun validateInputs(): Boolean {
         var valid = true
-        val email = binding.etEmail.editText?.text?.toString().orEmpty().trim()
-        val password = binding.etPassword.editText?.text?.toString().orEmpty()
+        val email = binding?.etEmail?.editText?.text?.toString().orEmpty().trim()
+        val password = binding?.etPassword?.editText?.text?.toString().orEmpty()
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Enter a valid email address"
+            binding?.etEmail?.error = "Enter a valid email address"
             valid = false
         } else {
-            binding.etEmail.error = null
+            binding?.etEmail?.error = null
         }
 
         if (password.length < 6) {
-            binding.etPassword.error = "Password must be at least 6 characters"
+            binding?.etPassword?.error = "Password must be at least 6 characters"
             valid = false
         } else {
-            binding.etPassword.error = null
+            binding?.etPassword?.error = null
         }
 
         return valid
@@ -89,6 +88,6 @@ class SignInFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

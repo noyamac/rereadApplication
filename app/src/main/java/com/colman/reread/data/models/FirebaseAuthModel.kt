@@ -16,7 +16,7 @@ class FirebaseAuthModel {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onSuccess(auth.currentUser!!.uid)
+                    auth.currentUser?.uid?.let(onSuccess) ?: onError("User data not found after sign up")
                 } else {
                     onError(mapAuthError(task.exception))
                 }
@@ -27,7 +27,7 @@ class FirebaseAuthModel {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onSuccess(auth.currentUser!!.uid)
+                    auth.currentUser?.uid?.let(onSuccess) ?: onError("User data not found after sign in")
                 } else {
                     onError(mapAuthError(task.exception))
                 }
