@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.colman.reread.R
 import com.colman.reread.base.loadBitmapFromUri
 import com.colman.reread.databinding.FragmentSellBinding
@@ -80,8 +81,8 @@ class SellFragment : Fragment() {
                 is SellViewModel.PostStatus.Success -> {
                     setSubmittingState(false)
                     Toast.makeText(context, getString(R.string.success_post), Toast.LENGTH_LONG).show()
-                    clearFields()
                     viewModel.resetStatus()
+                    findNavController().navigate(R.id.action_sellFragment_to_homeFragment)
                 }
                 is SellViewModel.PostStatus.Error -> {
                     setSubmittingState(false)
