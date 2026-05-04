@@ -60,4 +60,9 @@ class HomeFragment : Fragment() {
             adapter.submitList(books)
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

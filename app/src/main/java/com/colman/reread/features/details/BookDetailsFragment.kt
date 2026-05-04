@@ -65,4 +65,10 @@ class BookDetailsFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }
