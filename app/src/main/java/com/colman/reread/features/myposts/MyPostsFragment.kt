@@ -50,6 +50,7 @@ class MyPostsFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.books.observe(viewLifecycleOwner) { books ->
             adapter.submitList(books)
+            binding?.tvEmpty?.visibility = if (books.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.deleteStatus.observe(viewLifecycleOwner) { status ->

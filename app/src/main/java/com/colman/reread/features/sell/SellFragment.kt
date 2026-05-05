@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.colman.reread.R
 import com.colman.reread.base.loadBitmapFromUri
 import com.colman.reread.databinding.FragmentSellBinding
@@ -62,14 +63,13 @@ class SellFragment : Fragment() {
         }
 
         binding?.btnSubmit?.setOnClickListener {
-            binding?.loadingSpinner?.visibility = View.VISIBLE
+            setSubmittingState(true)
             viewModel.postBook(
                 title = binding?.etTitle?.text.toString(),
                 author = binding?.etAuthor?.text.toString(),
                 priceStr = binding?.etPrice?.text.toString(),
                 description = binding?.etDescription?.text.toString(),
                 summary = binding?.etSummary?.text.toString(),
-                contactPhone = binding?.etContactPhone?.text.toString(),
                 image = selectedBookImage
             )
         }
@@ -79,20 +79,26 @@ class SellFragment : Fragment() {
         viewModel.postStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 is SellViewModel.PostStatus.Success -> {
-                    binding?.loadingSpinner?.visibility = View.GONE
+                    setSubmittingState(false)
                     Toast.makeText(context, getString(R.string.success_post), Toast.LENGTH_LONG).show()
-                    clearFields()
                     viewModel.resetStatus()
+                    findNavController().navigate(R.id.action_sellFragment_to_homeFragment)
                 }
                 is SellViewModel.PostStatus.Error -> {
-                    binding?.loadingSpinner?.visibility = View.GONE
+                    setSubmittingState(false)
                     Toast.makeText(context, getString(status.messageResId), Toast.LENGTH_SHORT).show()
                 }
                 is SellViewModel.PostStatus.Idle -> {
-                    binding?.loadingSpinner?.visibility = View.GONE
+                    setSubmittingState(false)
                 }
             }
         }
+    }
+
+    private fun setSubmittingState(isSubmitting: Boolean) {
+        binding?.btnSubmit?.isEnabled = !isSubmitting
+        binding?.submitLoadingSpinner?.visibility = if (isSubmitting) View.VISIBLE else View.GONE
+        binding?.btnSubmit?.text = if (isSubmitting) "" else getString(R.string.btn_post_book)
     }
 
     private fun clearFields() {
@@ -101,7 +107,6 @@ class SellFragment : Fragment() {
         binding?.etPrice?.text?.clear()
         binding?.etDescription?.text?.clear()
         binding?.etSummary?.text?.clear()
-        binding?.etContactPhone?.text?.clear()
         selectedBookImage = null
         binding?.ivBookImagePreview?.setImageResource(R.drawable.default_book_cover)
     }

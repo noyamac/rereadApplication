@@ -30,11 +30,10 @@ class SellViewModel : ViewModel() {
         priceStr: String,
         description: String,
         summary: String,
-        contactPhone: String,
         image: Bitmap?
     ) {
         if (title.isBlank() || author.isBlank() || priceStr.isBlank() ||
-            description.isBlank() || summary.isBlank() || contactPhone.isBlank()
+            description.isBlank() || summary.isBlank()
         ) {
             _postStatus.value = PostStatus.Error(R.string.error_empty_fields)
             return
@@ -49,6 +48,15 @@ class SellViewModel : ViewModel() {
         val bookId = System.currentTimeMillis().toString()
 
         userRepository.getCurrentUser { user ->
+            val contactPhone = user?.phone?.takeIf { it.isNotBlank() }
+                ?: UserRepository.shared.currentUser?.phone
+                ?: ""
+
+            if (contactPhone.isBlank()) {
+                _postStatus.value = PostStatus.Error(R.string.error_empty_fields)
+                return@getCurrentUser
+            }
+
             fun saveBook(finalImageUrl: String) {
                 val sellerEmail = user?.email?.takeIf { it.isNotBlank() }
                     ?: UserRepository.shared.currentUser?.email

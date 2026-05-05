@@ -26,7 +26,10 @@ class BookRepository private constructor() {
         firebaseModel.listenToBooks(
             onBooksUpdated = { bookList ->
                 executor.execute {
-                    localDb.bookDao.insertBooks(*bookList.toTypedArray())
+                    localDb.runInTransaction {
+                        localDb.bookDao.deleteAll()
+                        localDb.bookDao.insertBooks(*bookList.toTypedArray())
+                    }
                 }
             },
             onError = { error ->
