@@ -58,6 +58,7 @@ class UserRepository private constructor() {
                 onSuccess = { user ->
                     executor.execute {
                         if (user != null) {
+                            database.userDao.deleteAll()
                             database.userDao.insertUsers(user)
                         }
                         mainHandler.post { 

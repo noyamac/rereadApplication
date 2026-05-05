@@ -3,7 +3,6 @@ package com.colman.reread.features.myposts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import com.colman.reread.R
 import com.colman.reread.data.repository.BookRepository
 import com.colman.reread.data.repository.UserRepository
@@ -21,14 +20,11 @@ class MyPostsViewModel : ViewModel() {
     private val _deleteStatus = MutableLiveData<DeleteStatus>(DeleteStatus.Idle)
     val deleteStatus: LiveData<DeleteStatus> = _deleteStatus
 
-    val books: LiveData<List<Book>> = BookRepository.shared.books.map { allBooks ->
-        val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
+    val books: LiveData<List<Book>> = run {
+        val email = FirebaseAuth.getInstance().currentUser?.email
             ?: UserRepository.shared.currentUser?.email
-        val normalizedEmail = currentUserEmail?.trim()?.lowercase()
-
-        allBooks.filter { book ->
-            book.sellerEmail.trim().lowercase() == normalizedEmail
-        }
+            ?: ""
+        BookRepository.shared.getBooksBySellerEmail(email)
     }
 
     fun deleteBook(book: Book) {
