@@ -22,6 +22,9 @@ class BookRepository private constructor() {
 
     val books: LiveData<List<Book>> = localDb.bookDao.getAllBooks()
 
+    fun getBooksBySellerEmail(email: String): LiveData<List<Book>> =
+        localDb.bookDao.getBooksBySellerEmail(email)
+
     init {
         firebaseModel.listenToBooks(
             onBooksUpdated = { bookList ->
@@ -85,4 +88,5 @@ class BookRepository private constructor() {
             }
         )
     }
+
 }

@@ -12,6 +12,9 @@ interface BookDao {
     @Query("SELECT * FROM Book")
     fun getAllBooks(): LiveData<List<Book>>
 
+    @Query("SELECT * FROM Book WHERE LOWER(TRIM(sellerEmail)) = LOWER(TRIM(:email))")
+    fun getBooksBySellerEmail(email: String): LiveData<List<Book>>
+
     @Query("SELECT * FROM Book WHERE id = :bookId")
     fun getBookById(bookId: String): LiveData<Book?>
 
